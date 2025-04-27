@@ -1,3 +1,11 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 @source "hugo_stats.json";
+
+
+.custom-heading-wrapper h2 {
+    font-size: 2rem; /* or whatever you want */
+    font-weight: 500;
+    text-align: center;
+    color: dark:text-white; /* or dark:text-white if Tailwind */
+  }
