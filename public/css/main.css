@@ -177,6 +177,9 @@
   .relative {
     position: relative;
   }
+  .static {
+    position: static;
+  }
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
@@ -341,6 +344,12 @@
   .pl-6 {
     padding-left: calc(var(--spacing) * 6);
   }
+  .\[word-break\:break-word\] {
+    word-break: break-word;
+  }
+  .\[hyphens\:auto\] {
+    hyphens: auto;
+  }
   .text-black {
     color: var(--color-black);
   }
@@ -363,6 +372,12 @@
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
+  }
+  .\[-webkit-tap-highlight-color\:transparent\] {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .\[-webkit-touch-callout\:none\] {
+    -webkit-touch-callout: none;
   }
   .\[transition\:background-color_1\.5s_ease\] {
     transition: background-color 1.5s ease;
