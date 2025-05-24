@@ -34,6 +34,26 @@ public class SocialMediaPostsService(IHttpClientFactory httpClientFactory)
 
         return posts!.Posts.FirstOrDefault(x => x.Id == postId)?.Tags;
     }
+
+    public async Task<Post> AddPostAsync(
+        Post post,
+        CancellationToken cancellationToken
+    )
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            $"{BaseUrl}/posts/add",
+            post,
+            ObjectSerializer.GetOptions,
+            cancellationToken
+        );
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<Post>(
+            ObjectSerializer.GetOptions,
+            cancellationToken
+        ) ?? throw new InvalidOperationException("Failed to deserialize the post.");
+    }
 }
 ```
 
@@ -47,6 +67,11 @@ public interface ISocialMediaPostsService
 {
     Task<IEnumerable<string>?> GetAllTagsForPostAsync(
         int postId,
+        CancellationToken cancellationToken
+    );
+
+    Task<Post> AddPostAsync(
+        Post post,
         CancellationToken cancellationToken
     );
 }
@@ -126,6 +151,7 @@ For the ease of writing tests for classes that uses a `HttpClient`, we can creat
 * [xUnit](https://xunit.net)
 * [NSubstitue](https://nsubstitute.github.io/docs/2010-01-01-getting-started.html)
 * [Shouldly](https://docs.shouldly.org)
+* [AutoBogus](https://github.com/nickdodd79/AutoBogus)
 
 ```csharp{filename="MockHttpMessageHandlerTestBasecs"}
 public class MockHttpMessageHandlerTestBase
@@ -233,6 +259,23 @@ public class SocialMediaPostsServiceTests : MockHttpMessageHandlerTestBase
         tags.ShouldBeEquivalentTo(posts.Posts.Find(x => x.Id == postId)?.Tags);
     }
 
+    [Fact]
+    public async Task AddPostTestAsync()
+    {
+        var postToSend = new AutoFaker<Post>().UseSeed(42).Generate();
+        var postReceived = new AutoFaker<Post>().UseSeed(42).Generate();
+        HttpMockHandlerReturns(postReceived, HttpStatusCode.OK);
+        HttpMockHandlerShouldHandleFor(HttpMethod.Post, "dummyjson.com/posts/add");
+        var post = await _socialMediaPostsServiceMock.AddPostAsync(
+            postToSend,
+            CancellationToken.None
+        );
+        
+        post.ShouldNotBeNull();
+        post.ShouldBeEquivalentTo(postReceived);
+        HttpMockHandlerShouldReceiveObject(postToSend);
+    }
+
     private static PostsResponse GetAllPosts()
     {
         return new PostsResponse
@@ -258,3 +301,9 @@ public class SocialMediaPostsServiceTests : MockHttpMessageHandlerTestBase
 }
 ```
 In this test, we inject a mock `IHttpClientFactory` into the service. The factory returns a `HttpClient` that uses our custom `MockHttpMessageHandler`. This lets us simulate HTTP responses and verify requests without making real network calls. The service uses this client just like it would in production, but everything is controlled in the test.
+
+You can find the codes in the following GitHub repository.
+
+{{< cards cols="1" >}}
+{{< card link="https://github.com/vicky-sh/Mocking-Request-Handling-by-HTTP-Client" title="Mocking-Request-Handling-by-HTTP-Client" icon="github" >}}
+{{< /cards >}}
