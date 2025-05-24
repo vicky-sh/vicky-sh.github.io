@@ -379,6 +379,9 @@
   .\[-webkit-touch-callout\:none\] {
     -webkit-touch-callout: none;
   }
+  .\[counter-reset\:step\] {
+    counter-reset: step;
+  }
   .\[transition\:background-color_1\.5s_ease\] {
     transition: background-color 1.5s ease;
   }
