@@ -53,7 +53,7 @@ jobs:
 
       - name: Inject Google Analytics ID into hugo.yaml
         env:
-          GA_ID: ${{ secrets.GOOLGE_ANALYTICS_ID }}
+          GA_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: |
           sed -i "s/^  ID: .*/  ID: ${GA_ID}/" hugo.yaml
 
@@ -62,7 +62,6 @@ jobs:
           # For maximum backward compatibility with Hugo modules
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-          GOOLGE_ANALYTICS_ID: "G-X91L7SY6WR" # Replace with your Google Analytics ID
         run: |
           hugo \
             --gc \
