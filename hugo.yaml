@@ -53,6 +53,12 @@ params:
       width: 40
       height: 20
 
+  footer:
+      enable: true
+      displayCopyright: true
+      displayPoweredBy: false
+      width: normal
+
 markup:
   highlight:
     noClasses: true
