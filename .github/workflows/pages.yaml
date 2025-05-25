@@ -30,12 +30,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # fetch all history for .GitInfo and .Lastmod
+          fetch-depth: 0 # fetch all history for .GitInfo and .Lastmod
           submodules: recursive
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: "1.22"
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
@@ -46,19 +46,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
-        run: npm install    
+        run: npm install
       - name: Build with Hugo
         env:
           # For maximum backward compatibility with Hugo modules
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
+          GOOLGE_ANALYTICS_ID: "G-X91L7SY6WR" # Replace with your Google Analytics ID
         run: |
           hugo \
             --gc --minify \
-            --baseURL "https://${{ github.repository_owner }}.github.io/"
+            --baseURL "https://${{ github.repository_owner }}.github.io/" \
+            --params.googleAnalytics="$GOOLGE_ANALYTICS_ID"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
