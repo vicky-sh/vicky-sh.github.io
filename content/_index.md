@@ -131,7 +131,7 @@ I created this blog as a personal space to document solutions to repetitive codi
 <!-- Feature grid centered below the heading -->
 <div class="w-full flex mx-auto justify-center sm:justify-center p-8 sm:ml-10 lg:ml-10">
   {{< hextra/feature-grid >}}
-  {{< hextra/feature-card link="docs/asp.net-core/mockinghttpclient/" title="Mocking Request Handling by HTTP Client" subtitle="Replace manual type handling in HTTP clients with generic-based serialization and deserialization support" >}}
+  {{< hextra/feature-card link="docs/asp.net-core/mockinghttpclient/" title="Mocking Request Handling by HTTP Client" subtitle="How to mock HTTP request handling by a HTTP Client while writing unit tests" >}}
   
   {{< hextra/feature-card title="Post Coming Soon" subtitle="Something new will come soon." >}}
   
