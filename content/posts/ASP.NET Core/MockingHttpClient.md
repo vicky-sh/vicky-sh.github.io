@@ -2,6 +2,8 @@
 date: '2025-05-18T13:47:48+02:00'
 draft: false
 title: 'Mocking Request Handling by HTTP Client'
+cascade:
+  type: docs
 ---
 
 There would surely be scenarios in your application where you should use a HTTP Client to request for resources from another server. But how can you mock the behaviour of the default methods of the Http Client provided by the .NET Core Framework while writing unit tests? This post is meant to mock such HTTP request handling for unit testing. 

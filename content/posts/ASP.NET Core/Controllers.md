@@ -2,6 +2,8 @@
 date: "2025-05-01T13:55:09+02:00"
 draft: false
 title: "Controllers"
+cascade:
+  type: docs
 ---
 
 In ASP.NET Core, a controller is a class that handles incoming HTTP requests, processes them (often with the help of a model or service), and returns a response—usually a View, JSON, or a status code.
