@@ -64,6 +64,14 @@
       "before:hx-opacity-25",
       "before:hx-pointer-events-none",
       "before:hx-w-px",
+      "bg-[##7EC1E1]",
+      "bg-[#4294BA]",
+      "bg-[#5591AC#]",
+      "bg-[#5591AC]",
+      "bg-[#618C8F]",
+      "bg-[#7EC1E1]",
+      "bg-[#869A83]",
+      "bg-[618C8F#]",
       "bg-slate-300",
       "bg-white",
       "border-gray-300",
@@ -509,6 +517,7 @@
       "z-10"
     ],
     "ids": [
+      "aspnet-core-posts",
       "backToTop",
       "custom-handlers-can-override-this-behavior",
       "httpclient-inherits-from-httpmessageinvoker",
@@ -516,6 +525,7 @@
       "in-brief",
       "mockhttpmessagehandlertestbase-class-for-reusable-testing",
       "our-mockhttpmessagehandler-would-look-like-this",
+      "posts-in-this-area",
       "the-request-is-passed-to-httpmessagehandler",
       "writing-unit-tests-with-mockhttpmessagehandlertestbase"
     ]

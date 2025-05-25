@@ -323,6 +323,30 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
+  .bg-\[\#\#7EC1E1\] {
+    background-color: ##7EC1E1;
+  }
+  .bg-\[\#7EC1E1\] {
+    background-color: #7EC1E1;
+  }
+  .bg-\[\#618C8F\] {
+    background-color: #618C8F;
+  }
+  .bg-\[\#869A83\] {
+    background-color: #869A83;
+  }
+  .bg-\[\#4294BA\] {
+    background-color: #4294BA;
+  }
+  .bg-\[\#5591AC\#\] {
+    background-color: #5591AC#;
+  }
+  .bg-\[\#5591AC\] {
+    background-color: #5591AC;
+  }
+  .bg-\[618C8F\#\] {
+    background-color: 618C8F#;
+  }
   .bg-slate-300 {
     background-color: var(--color-slate-300);
   }

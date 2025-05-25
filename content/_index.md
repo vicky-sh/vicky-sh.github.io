@@ -36,7 +36,7 @@ I created this blog as a personal space to document solutions to repetitive codi
   <div class="group flex gap-x-6">
     <div class="relative">
       <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-slate-300 dark:bg-slate-700"></div>
-      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-300 dark:bg-slate-500 text-black dark:text-white">
+      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-[#4294BA] text-black dark:text-white">
         <!-- Icon -->
 <!-- Briefcase Icon for Job -->
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
@@ -55,7 +55,7 @@ I created this blog as a personal space to document solutions to repetitive codi
   <div class="group flex gap-x-6">
     <div class="relative">
       <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-slate-300 dark:bg-slate-700"></div>
-      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-300 dark:bg-slate-500 text-black dark:text-white">
+      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-[#869A83] text-black dark:text-white">
         <!-- Icon -->
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -72,7 +72,7 @@ I created this blog as a personal space to document solutions to repetitive codi
   <div class="group flex gap-x-6">
     <div class="relative">
     <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-slate-300 dark:bg-slate-700"></div>
-      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-300 dark:bg-slate-500 text-black dark:text-white">
+      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-[#869A83] text-black dark:text-white">
         <!-- Icon -->
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -89,7 +89,7 @@ I created this blog as a personal space to document solutions to repetitive codi
   <div class="group flex gap-x-6">
     <div class="relative">
       <div class="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-slate-300 dark:bg-slate-700"></div>
-      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-300 dark:bg-slate-500 text-black dark:text-white">
+      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-[#869A83] text-black dark:text-white">
         <!-- Icon -->
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -104,7 +104,7 @@ I created this blog as a personal space to document solutions to repetitive codi
   </div>
     <div class="group flex gap-x-6">
     <div class="relative">
-      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-300 dark:bg-slate-500 text-black dark:text-white">
+      <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-[#869A83] text-black dark:text-white">
         <!-- Icon -->
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -131,7 +131,7 @@ I created this blog as a personal space to document solutions to repetitive codi
 <!-- Feature grid centered below the heading -->
 <div class="w-full flex mx-auto justify-center sm:justify-center p-8 sm:ml-10 lg:ml-10">
   {{< hextra/feature-grid >}}
-  {{< hextra/feature-card link="posts/asp.net-core/mockinghttpclient/" title="HTTP Client Extension in ASP.NET Core" subtitle="Replace manual type handling in HTTP clients with generic-based serialization and deserialization support" >}}
+  {{< hextra/feature-card link="posts/asp.net-core/mockinghttpclient/" title="Mocking Request Handling by HTTP Client" subtitle="Replace manual type handling in HTTP clients with generic-based serialization and deserialization support" >}}
   
   {{< hextra/feature-card title="Post Coming Soon" subtitle="Something new will come soon." >}}
   
