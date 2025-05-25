@@ -1,4 +1,4 @@
-baseURL: https://example.org/
+baseURL: https://vkeysspace.com/
 languageCode: en-us
 title: vkeysspace
 
@@ -35,7 +35,7 @@ menu:
         type: search
     - name: GitHub
       weight: 5
-      url: "https://github.com/imfing/hextra"
+      url: "https://github.com/vicky-sh"
       params:
         icon: github
 
@@ -66,3 +66,7 @@ markup:
           block: [['\[', '\]'], ["$$", "$$"]]
           inline: [['\(', '\)']]
         enable: true
+
+services:
+  googleAnalytics:
+    ID: G-X91L7SY6WR
