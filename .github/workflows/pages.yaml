@@ -50,6 +50,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Inject Google Analytics ID into hugo.yaml
+        env:
+          GA_ID: ${{ secrets.GOOLGE_ANALYTICS_ID }}
+        run: |
+          sed -i "s/^  ID: .*/  ID: ${GA_ID}/" hugo.yaml
+
       - name: Build with Hugo
         env:
           # For maximum backward compatibility with Hugo modules
@@ -59,8 +66,7 @@ jobs:
         run: |
           hugo \
             --gc --minify \
-            --baseURL "https://${{ github.repository_owner }}.github.io/" \
-            --params.googleAnalytics="$GOOLGE_ANALYTICS_ID"
+            --baseURL "https://${{ github.repository_owner }}.github.io/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
