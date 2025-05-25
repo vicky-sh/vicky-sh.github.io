@@ -1,9 +1,7 @@
 ---
 date: "2025-05-01T13:51:25+02:00"
-draft: true
+draft: false
 title: "ASP.NET Core"
-cascade:
-  type: docs
 ---
 
 ## Posts in this area

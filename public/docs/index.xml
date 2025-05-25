@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vkeysspace – ASP.NET Core</title>
-    <link>http://localhost:1313/posts/asp.net-core/</link>
-    <description>Recent content in ASP.NET Core on vkeysspace</description>
+    <title>vkeysspace – Posts</title>
+    <link>http://localhost:1313/docs/</link>
+    <description>Recent content in Posts on vkeysspace</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 01 May 2025 13:51:25 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 01 May 2025 13:47:13 +0200</lastBuildDate>
     
-	  <atom:link href="http://localhost:1313/posts/asp.net-core/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -17,10 +17,10 @@
     
     <item>
       <title>Mocking Request Handling by HTTP Client</title>
-      <link>http://localhost:1313/posts/asp.net-core/mockinghttpclient/</link>
+      <link>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</link>
       <pubDate>Sun, 18 May 2025 13:47:48 +0200</pubDate>
       
-      <guid>http://localhost:1313/posts/asp.net-core/mockinghttpclient/</guid>
+      <guid>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</guid>
       <description>
         
         
@@ -396,10 +396,10 @@ Mocking-Request-Handling-by-HTTP-Client&lt;/span&gt;&lt;/a&gt;
     
     <item>
       <title>Controllers</title>
-      <link>http://localhost:1313/posts/asp.net-core/controllers/</link>
+      <link>http://localhost:1313/docs/asp.net-core/controllers/</link>
       <pubDate>Thu, 01 May 2025 13:55:09 +0200</pubDate>
       
-      <guid>http://localhost:1313/posts/asp.net-core/controllers/</guid>
+      <guid>http://localhost:1313/docs/asp.net-core/controllers/</guid>
       <description>
         
         
@@ -469,10 +469,10 @@ Mocking-Request-Handling-by-HTTP-Client&lt;/span&gt;&lt;/a&gt;
     
     <item>
       <title>Effectively Handling HTTP Requests</title>
-      <link>http://localhost:1313/posts/asp.net-core/httpclientextensions/</link>
+      <link>http://localhost:1313/docs/asp.net-core/httpclientextensions/</link>
       <pubDate>Thu, 01 May 2025 13:47:23 +0200</pubDate>
       
-      <guid>http://localhost:1313/posts/asp.net-core/httpclientextensions/</guid>
+      <guid>http://localhost:1313/docs/asp.net-core/httpclientextensions/</guid>
       <description>
         
         

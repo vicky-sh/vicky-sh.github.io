@@ -1,0 +1,484 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vkeysspace – ASP.NET Core</title>
+    <link>http://localhost:1313/docs/asp.net-core/</link>
+    <description>Recent content in ASP.NET Core on vkeysspace</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 May 2025 13:51:25 +0200</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/docs/asp.net-core/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Mocking Request Handling by HTTP Client</title>
+      <link>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</link>
+      <pubDate>Sun, 18 May 2025 13:47:48 +0200</pubDate>
+      
+      <guid>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</guid>
+      <description>
+        
+        
+        &lt;p&gt;There would surely be scenarios in your application where you should use a HTTP Client to request for resources from another server. But how can you mock the behaviour of the default methods of the Http Client provided by the .NET Core Framework while writing unit tests? This post is meant to mock such HTTP request handling for unit testing.&lt;/p&gt;
+&lt;p&gt;Consider the following code where a service named &lt;code&gt;SocialMediaPostsService&lt;/code&gt; uses a HTTP Client to request json objects from &lt;a href=&#34;https://dummyjson.com/docs/posts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Dummy JSON&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsService.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;SocialMediaPostsService&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;IHttpClientFactory httpClientFactory&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;:&lt;/span&gt; ISocialMediaPostsService
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt; BaseUrl &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;https://dummyjson.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;readonly&lt;/span&gt; HttpClient _httpClient &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; httpClientFactory&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;CreateClient&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Constants&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;DUMMY_JSON_CLIENT
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;async&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;IEnumerable&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;?&amp;gt;&lt;/span&gt; GetAllTagsForPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;int&lt;/span&gt; postId&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; response &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; _httpClient&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;$&amp;#34;{BaseUrl}/posts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; cancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        response&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;EnsureSuccessStatusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; posts &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; response&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Content&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ReadFromJsonAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;PostsResponse&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            ObjectSerializer&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetOptions&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; posts&lt;span style=&#34;color:#56b6c2&#34;&gt;!.&lt;/span&gt;Posts&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;FirstOrDefault&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt; x&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Id &lt;span style=&#34;color:#56b6c2&#34;&gt;==&lt;/span&gt; postId&lt;span style=&#34;color:#56b6c2&#34;&gt;)?.&lt;/span&gt;Tags&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;async&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; AddPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Post post&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; response &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; _httpClient&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;PostAsJsonAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#82cc6a&#34;&gt;$&amp;#34;{BaseUrl}/posts/add&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            post&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            ObjectSerializer&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetOptions&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        response&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;EnsureSuccessStatusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; response&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Content&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ReadFromJsonAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            ObjectSerializer&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetOptions&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;??&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; InvalidOperationException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Failed to deserialize the post.&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;Using &lt;em&gt;IHttpClientFactory&lt;/em&gt; ensures efficient connection management and allows pre-configured named clients for consistent setup and reuse.&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Shown below is the &lt;em&gt;ISocialMediaPostsService&lt;/em&gt; interface used for dependency injection.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;ISocialMediaPostsService.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;ISocialMediaPostsService&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;IEnumerable&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;?&amp;gt;&lt;/span&gt; GetAllTagsForPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;int&lt;/span&gt; postId&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; AddPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Post post&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To be able to understand how the client can be mocked, it is essential to understand how the client handles the HTTP request message.&lt;/p&gt;
+&lt;h3&gt;In Brief&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;in-brief&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#in-brief&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;steps hx-ml-4 hx-mb-12 ltr:hx-border-l rtl:hx-border-r hx-border-gray-200 ltr:hx-pl-6 rtl:hx-pr-6 dark:hx-border-neutral-800 [counter-reset:step]&#34;&gt;
+&lt;h3&gt;&lt;code&gt;HttpClient&lt;/code&gt; inherits from &lt;code&gt;HttpMessageInvoker&lt;/code&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;httpclient-inherits-from-httpmessageinvoker&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#httpclient-inherits-from-httpmessageinvoker&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The &lt;code&gt;HttpClient&lt;/code&gt; class is built on top of &lt;code&gt;HttpMessageInvoker&lt;/code&gt;, which is responsible for forwarding HTTP requests.&lt;/p&gt;
+&lt;p&gt;If you carefully look at the source code for &lt;a href=&#34;https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;HttpClient&lt;/a&gt;, you will notice that the class inherits from &lt;a href=&#34;https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpMessageInvoker.cs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;HttpMessageInvoker&lt;/a&gt;. Our Http Client&amp;rsquo;s &lt;code&gt;GetAsync&lt;/code&gt; method internally invokes a base method in &lt;code&gt;HttpMessageInvoker&lt;/code&gt; namely:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;HttpMessageInvoker.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;virtual&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpResponseMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; SendAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpRequestMessage request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; CancellationToken cancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;&lt;code&gt;HttpMessageInvoker&lt;/code&gt; holds a reference to &lt;code&gt;HttpMessageHandler&lt;/code&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;httpmessageinvoker-holds-a-reference-to-httpmessagehandler&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#httpmessageinvoker-holds-a-reference-to-httpmessagehandler&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When an HTTP request is made, &lt;code&gt;HttpMessageInvoker&lt;/code&gt; uses the internal &lt;a href=&#34;https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpMessageHandler.cs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;HttpMessageHandler&lt;/a&gt; provided to handle the HTTP request.&lt;/p&gt;
+&lt;h3&gt;The request is passed to &lt;code&gt;HttpMessageHandler&lt;/code&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;the-request-is-passed-to-httpmessagehandler&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-request-is-passed-to-httpmessagehandler&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The handler processes the request. This is the main point where the actual HTTP logic is handled. The following is the core method for handling.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;HttpMessageHandler.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;virtual&lt;/span&gt; HttpResponseMessage Send&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpRequestMessage request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; CancellationToken cancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; NotSupportedException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;SR&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Format&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;SR&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;net_http_missing_sync_implementation&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; GetType&lt;span style=&#34;color:#56b6c2&#34;&gt;(),&lt;/span&gt; nameof&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpMessageHandler&lt;span style=&#34;color:#56b6c2&#34;&gt;),&lt;/span&gt; nameof&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;Send&lt;span style=&#34;color:#56b6c2&#34;&gt;)));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Custom handlers can override this behavior&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;custom-handlers-can-override-this-behavior&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#custom-handlers-can-override-this-behavior&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The &lt;code&gt;HttpMessageHandler&lt;/code&gt; class provides the following abstract method to be overriden by an extending class to implement a custom handling of &lt;code&gt;HttpRequestMessage&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;HttpMessageHandler.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;abstract&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpResponseMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; SendAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpRequestMessage request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; CancellationToken cancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;By extending &lt;code&gt;HttpMessageHandler&lt;/code&gt;, we can intercept requests and return controlled responses, which is how mocking works in tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h3&gt;Our &lt;code&gt;MockHttpMessageHandler&lt;/code&gt; would look like this&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;our-mockhttpmessagehandler-would-look-like-this&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#our-mockhttpmessagehandler-would-look-like-this&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;MockHttpMessageHandler.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;MockHttpMessageHandler&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;:&lt;/span&gt; HttpMessageHandler
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;override&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpResponseMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; SendAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpRequestMessage request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; Task&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;FromResult&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;MockSendAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; cancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;virtual&lt;/span&gt; HttpResponseMessage MockSend&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpRequestMessage request&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        CancellationToken cancellationToken
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; NotImplementedException&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In the above HTTP mock handler we can create our own method &lt;code&gt;MockSend&lt;/code&gt; to be overwritten when we like to write a test, but for the moment we just throw a &lt;code&gt;NotImplementedException&lt;/code&gt;. We can then override the abstract method provided by &lt;code&gt;HttpMessageHandler&lt;/code&gt; to return the result of our own method &lt;code&gt;MockSend&lt;/code&gt;. This is how we can make sure than when the &lt;code&gt;HttpMessageHandler&#39;s&lt;/code&gt; &lt;code&gt;SendAsync&lt;/code&gt;method is invoked by the framework, our method &lt;code&gt;MockSend&lt;/code&gt; is invoked internally.&lt;/p&gt;
+&lt;h3&gt;&lt;code&gt;MockHttpMessageHandlerTestBase&lt;/code&gt; class for reusable testing&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;mockhttpmessagehandlertestbase-class-for-reusable-testing&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mockhttpmessagehandlertestbase-class-for-reusable-testing&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;For the ease of writing tests for classes that uses a &lt;code&gt;HttpClient&lt;/code&gt;, we can create a resuable class to handle everything related to our HTTP mock handler, like making our handler return a specific object and a staus code, ensure that the mock handler had received a HTTP request message with a particular &lt;code&gt;Ùri&lt;/code&gt;,&lt;code&gt;HttpMethod&lt;/code&gt; and &lt;code&gt;Content&lt;/code&gt;. The test class uses the follwoing library:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://xunit.net&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xUnit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://nsubstitute.github.io/docs/2010-01-01-getting-started.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NSubstitue&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.shouldly.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Shouldly&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nickdodd79/AutoBogus&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;AutoBogus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;MockHttpMessageHandlerTestBasecs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;MockHttpMessageHandlerTestBase&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; MockHttpMessageHandlerTestBase&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; httpClient &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; HttpClient&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpMessageHandlerMock&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            BaseAddress &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; Uri&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;http://localhost:5000&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpClientFactory&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;CreateClient&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Any&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;()).&lt;/span&gt;Returns&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;httpClient&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; MockHttpMessageHandler HttpMessageHandlerMock &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Substitute&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ForPartsOf&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;MockHttpMessageHandler&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; IHttpClientFactory HttpClientFactory &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; Substitute&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;For&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;IHttpClientFactory&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     Verifies that the mocked HTTP message handler processes a request with the specified HTTP method&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     and a request URI containing the given string.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;/summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;param name=&amp;#34;httpMethod&amp;#34;&amp;gt;The HTTP method (e.g., GET, POST) to validate against the request.&amp;lt;/param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;param name=&amp;#34;requestUri&amp;#34;&amp;gt;The string that should be contained in the request URI.&amp;lt;/param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; HttpMockHandlerShouldHandleFor&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpMethod httpMethod&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt; requestUri&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerDoes&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;message &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            message&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Method&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldBe&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;httpMethod&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            message&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;RequestUri&lt;span style=&#34;color:#56b6c2&#34;&gt;!.&lt;/span&gt;AbsoluteUri&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldContain&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;requestUri&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     Configures the mocked HTTP message handler to return a response with the specified content and status code&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     when any HTTP request is sent.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;/summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;typeparam name=&amp;#34;TResponse&amp;#34;&amp;gt;The type of the response content to be serialized as JSON.&amp;lt;/typeparam&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;param name=&amp;#34;response&amp;#34;&amp;gt;The response object to be serialized and returned in the HTTP response body.&amp;lt;/param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;param name=&amp;#34;statusCode&amp;#34;&amp;gt;The HTTP status code to be set in the response.&amp;lt;/param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; HttpMockHandlerReturns&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;TResponse&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(&lt;/span&gt;TResponse response&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; HttpStatusCode statusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMessageHandlerMock
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;MockSend&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Any&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpRequestMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(),&lt;/span&gt; Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Any&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;CancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;())&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Returns&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; HttpResponseMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;statusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                Content &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; JsonContent&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Create&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;response&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     Verifies that the mocked HTTP message handler receives a request with a JSON body&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;///     matching the specified request object.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;/summary&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;typeparam name=&amp;#34;TRequest&amp;#34;&amp;gt;The type of the request object expected in the HTTP request body.&amp;lt;/typeparam&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#bc74c4;font-style:italic&#34;&gt;/// &amp;lt;param name=&amp;#34;requestObject&amp;#34;&amp;gt;The expected request object to compare against the deserialized request body.&amp;lt;/param&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; HttpMockHandlerShouldReceiveObject&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;TRequest&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(&lt;/span&gt;TRequest requestObject&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerDoes&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;message &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Debug&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Assert&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;message&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Content &lt;span style=&#34;color:#56b6c2&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; content &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; message&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Content&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ReadAsStringAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;().&lt;/span&gt;Result&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; receivedObject &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; JsonSerializer&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Deserialize&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;TRequest&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(&lt;/span&gt;content&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            receivedObject&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldBe&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;requestObject&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; HttpMockHandlerDoes&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;Action&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpRequestMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; callbackAction&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMessageHandlerMock
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;When&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt; x&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;MockSend&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Any&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpRequestMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;(),&lt;/span&gt; Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Any&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;CancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;()))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Do&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt; callbackAction&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Arg&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;HttpRequestMessage&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;()));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-blue-200 hx-bg-blue-100 hx-text-blue-900 dark:hx-border-blue-200/30 dark:hx-bg-blue-900/30 dark:hx-text-blue-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;Note how we create a &lt;code&gt;HttpClient&lt;/code&gt; with our custom handler &lt;code&gt;HttpMessageHandlerMock&lt;/code&gt; as the request message handler and carefully mock the &lt;code&gt;CreateClient&lt;/code&gt; of the &lt;code&gt;IHttpClientFactory&lt;/code&gt; to return the &lt;code&gt;HttpClient&lt;/code&gt;.&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-amber-200 hx-bg-amber-100 hx-text-amber-900 dark:hx-border-amber-200/30 dark:hx-bg-amber-900/30 dark:hx-text-amber-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z&#34;/&gt;&lt;/svg&gt;Warning&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;The above &lt;code&gt;MockHttpMessageHandlerTestBase&lt;/code&gt; can be used as test base class if you use the interface &lt;code&gt;ÌHttpClientFactory&lt;/code&gt; to create the &lt;code&gt;HttpClient&lt;/code&gt;. Otherwise you need to modify the base class.&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Writing unit tests with &lt;code&gt;MockHttpMessageHandlerTestBase&lt;/code&gt;&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;writing-unit-tests-with-mockhttpmessagehandlertestbase&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#writing-unit-tests-with-mockhttpmessagehandlertestbase&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsServiceTests.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;SocialMediaPostsServiceTests&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;:&lt;/span&gt; MockHttpMessageHandlerTestBase
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;readonly&lt;/span&gt; ISocialMediaPostsService _socialMediaPostsServiceMock&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; SocialMediaPostsServiceTests&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _socialMediaPostsServiceMock &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; SocialMediaPostsService&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpClientFactory&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [Theory]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [InlineData(1)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [InlineData(2)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;async&lt;/span&gt; Task GetAllTagsForPostTestAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;int&lt;/span&gt; postId&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; posts &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; GetAllPosts&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerReturns&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;posts&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; HttpStatusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;OK&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerShouldHandleFor&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpMethod&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Get&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;dummyjson.com/posts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; tags &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; _socialMediaPostsServiceMock&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetAllTagsForPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            postId&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            CancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;None
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        tags&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldBeEquivalentTo&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;posts&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Posts&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Find&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#56b6c2&#34;&gt;=&amp;gt;&lt;/span&gt; x&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Id &lt;span style=&#34;color:#56b6c2&#34;&gt;==&lt;/span&gt; postId&lt;span style=&#34;color:#56b6c2&#34;&gt;)?.&lt;/span&gt;Tags&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [Fact]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;async&lt;/span&gt; Task AddPostTestAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; postToSend &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; AutoFaker&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;().&lt;/span&gt;UseSeed&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;42&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;).&lt;/span&gt;Generate&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; postReceived &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; AutoFaker&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;().&lt;/span&gt;UseSeed&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;42&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;).&lt;/span&gt;Generate&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerReturns&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;postReceived&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; HttpStatusCode&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;OK&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerShouldHandleFor&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;HttpMethod&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Post&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;dummyjson.com/posts/add&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; post &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;await&lt;/span&gt; _socialMediaPostsServiceMock&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;AddPostAsync&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            postToSend&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            CancellationToken&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;None
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        post&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldNotBeNull&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        post&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ShouldBeEquivalentTo&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;postReceived&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        HttpMockHandlerShouldReceiveObject&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;postToSend&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;static&lt;/span&gt; PostsResponse GetAllPosts&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; PostsResponse
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Posts &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;            [
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                new Post
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                    Id = 1,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                    Tags = new List&amp;lt;string&amp;gt; { &amp;#34;tag1&amp;#34;, &amp;#34;tag2&amp;#34;, &amp;#34;tag3&amp;#34;, &amp;#34;tag4&amp;#34; }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                },
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                new Post
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                    Id = 2,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                    Tags = new List&amp;lt;string&amp;gt; { &amp;#34;tag5&amp;#34;, &amp;#34;tag6&amp;#34; }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;                }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;            ]&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Total &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Skip &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Limit &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In this test, we inject a mock &lt;code&gt;IHttpClientFactory&lt;/code&gt; into the service. The factory returns a &lt;code&gt;HttpClient&lt;/code&gt; that uses our custom &lt;code&gt;MockHttpMessageHandler&lt;/code&gt;. This lets us simulate HTTP responses and verify requests without making real network calls. The service uses this client just like it would in production, but everything is controlled in the test.&lt;/p&gt;
+&lt;p&gt;You can find the codes in the following GitHub repository.&lt;/p&gt;
+&lt;div class=&#34;hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose&#34; style=&#34;--hextra-cards-grid-cols: 1;&#34;&gt;
+&lt;a
+  class=&#34;hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900&#34;href=&#34;https://github.com/vicky-sh/Mocking-Request-Handling-by-HTTP-Client&#34;
+    target=&#34;_blank&#34; rel=&#34;noreferrer&#34;&gt;&lt;span class=&#34;hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50&#34;&gt;&lt;svg fill=&#34;currentColor&#34; viewBox=&#34;3 3 18 18&#34;&gt;
+  &lt;path d=&#34;M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z&#34;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+Mocking-Request-Handling-by-HTTP-Client&lt;/span&gt;&lt;/a&gt;
+&lt;/div&gt;
+
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Controllers</title>
+      <link>http://localhost:1313/docs/asp.net-core/controllers/</link>
+      <pubDate>Thu, 01 May 2025 13:55:09 +0200</pubDate>
+      
+      <guid>http://localhost:1313/docs/asp.net-core/controllers/</guid>
+      <description>
+        
+        
+        &lt;p&gt;In ASP.NET Core, a controller is a class that handles incoming HTTP requests, processes them (often with the help of a model or service), and returns a response—usually a View, JSON, or a status code.&lt;/p&gt;
+&lt;p&gt;Controllers are a core part of the MVC pattern (Model-View-Controller) and are typically located in the Controllers folder of your project.&lt;/p&gt;
+&lt;p&gt;A controller:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Inherits from Controller or ControllerBase&lt;/li&gt;
+&lt;li&gt;Contains action methods—each mapped to an HTTP request like GET, POST, PUT, DELETE&lt;/li&gt;
+&lt;li&gt;Uses attributes like [HttpGet], [HttpPost], [Route] to define routing behavior&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;using&lt;/span&gt; Microsoft.AspNetCore.Mvc&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;using&lt;/span&gt; System.Collections.Generic&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;namespace&lt;/span&gt; MyApp.Controllers
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [ApiController]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;    [Route(&amp;#34;api/[controller]&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;)]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;ProductController&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;:&lt;/span&gt; ControllerBase
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#3e4460&#34;&gt;// Mock data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;static&lt;/span&gt; List&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; products &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; List&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Laptop&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Mouse&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Keyboard&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#3e4460&#34;&gt;// GET: api/product&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;        [HttpGet]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; ActionResult&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; GetAll&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; products&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#3e4460&#34;&gt;// GET: api/product/1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;        [HttpGet(&amp;#34;{id}&amp;#34;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; ActionResult&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;&lt;/span&gt; GetById&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;int&lt;/span&gt; id&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;id &lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;||&lt;/span&gt; id &lt;span style=&#34;color:#56b6c2&#34;&gt;&amp;gt;=&lt;/span&gt; products&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Count&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; NotFound&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Product not found&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; products&lt;span style=&#34;color:#56b6c2&#34;&gt;[&lt;/span&gt;id&lt;span style=&#34;color:#56b6c2&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#3e4460&#34;&gt;// POST: api/product&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#bc74c4&#34;&gt;        [HttpPost]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; ActionResult AddProduct&lt;span style=&#34;color:#56b6c2&#34;&gt;([&lt;/span&gt;FromBody&lt;span style=&#34;color:#56b6c2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;string&lt;/span&gt; product&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            products&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Add&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;product&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; Ok&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Product added&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Effectively Handling HTTP Requests</title>
+      <link>http://localhost:1313/docs/asp.net-core/httpclientextensions/</link>
+      <pubDate>Thu, 01 May 2025 13:47:23 +0200</pubDate>
+      
+      <guid>http://localhost:1313/docs/asp.net-core/httpclientextensions/</guid>
+      <description>
+        
+        
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

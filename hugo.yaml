@@ -24,7 +24,7 @@ module:
 menu:
   main:
     - name: Posts
-      pageRef: /posts
+      pageRef: /docs
       weight: 1
     - name: Blogs
       pageRef: /blogs

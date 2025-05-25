@@ -1,9 +1,7 @@
 ---
 date: "2025-05-01T13:47:13+02:00"
-draft: true
+draft: false
 title: "Posts"
-cascade:
-  type: docs
 ---
 
 ## ASP.NET Core Posts
