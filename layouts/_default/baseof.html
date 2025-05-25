@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}">
-    <head>
-        {{- partial "head.html" . -}}
-        {{ partialCached "css.html" . }}
-      </head>
+  <head>
+    {{- partial "head.html" . -}} {{ partialCached "css.html" . }}
+  </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-X91L7SY6WR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-X91L7SY6WR");
+  </script>
   <body dir="{{ .Site.Language.LanguageDirection | default `ltr` }}">
     {{- partial "navbar.html" . -}} {{- block "main" . }}{{ end -}} {{- if or
     (eq .Site.Params.footer.enable nil) (.Site.Params.footer.enable) }} {{
