@@ -47,7 +47,7 @@ I created this blog as a personal space to document solutions to repetitive codi
     </div>
     <div class="-translate-y-1.5 pb-8">
       <p class="mt-4 text-gray-700 dark:text-gray-200">Software Developer at Warema Renkhoff S.E</p>
-      <small class="mt-4 text-gray-700 dark:text-gray-400">Workign as a web devloper since October 2024</small><br>
+      <small class="mt-4 text-gray-700 dark:text-gray-400">Working as a web developer since October 2024.</small><br>
     </div>
 
   </div>
@@ -82,7 +82,7 @@ I created this blog as a personal space to document solutions to repetitive codi
     </div>
     <div class="-translate-y-1.5 pb-8">
       <p class="mt-4 text-gray-700 dark:text-gray-200">Studienkolleg der Goethe Universität Frankfurt</p>
-      <small class="mt-4 text-gray-700 dark:text-gray-400">In the year 2021 successfully passed the Festellungsprüfung in the technical course</small>
+      <small class="mt-4 text-gray-700 dark:text-gray-400">In the year 2021 successfully passed the Festellungsprüfung in the T course</small>
     </div>
   </div>
 
@@ -99,7 +99,7 @@ I created this blog as a personal space to document solutions to repetitive codi
     </div>
     <div class="-translate-y-1.5 pb-8">
       <p class="mt-4 text-gray-700 dark:text-gray-200">Himali Boarding School</p>
-      <small class="mt-4 text-gray-700 dark:text-gray-400">Higher secondary school ISC examination</small>
+      <small class="mt-4 text-gray-700 dark:text-gray-400">Higher secondary school ISC examination 2016</small>
     </div>
   </div>
     <div class="group flex gap-x-6">
@@ -114,7 +114,7 @@ I created this blog as a personal space to document solutions to repetitive codi
     </div>
     <div class="-translate-y-1.5 pb-8">
       <p class="mt-4 text-gray-700 dark:text-gray-200">Young Horizons School</p>
-      <small class="mt-4 text-gray-700 dark:text-gray-400">Seondary school ICSE examination</small>
+      <small class="mt-4 text-gray-700 dark:text-gray-400">Seondary school ICSE examination 2014</small>
     </div>
   </div>
   
