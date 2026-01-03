@@ -16,6 +16,286 @@
     
     
     <item>
+      <title>Factory</title>
+      <link>http://localhost:1313/docs/design-patterns/factory/</link>
+      <pubDate>Wed, 24 Dec 2025 23:19:09 +0530</pubDate>
+      
+      <guid>http://localhost:1313/docs/design-patterns/factory/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Here comes the content of the factory pattern&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Builder</title>
+      <link>http://localhost:1313/docs/design-patterns/builder/</link>
+      <pubDate>Wed, 24 Dec 2025 18:35:17 +0530</pubDate>
+      
+      <guid>http://localhost:1313/docs/design-patterns/builder/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read.
+This is where the Builder Pattern comes into play.
+The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.&lt;/p&gt;
+&lt;h2&gt;The Problem: Complex Object Construction&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;the-problem-complex-object-construction&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-problem-complex-object-construction&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Consider an object with many optional parameters:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; user &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; User&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;vicky&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;vicky@example.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    DateTime&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Now
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;At first glance, it’s not clear:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What each parameter represents&lt;/li&gt;
+&lt;li&gt;Which values are optional&lt;/li&gt;
+&lt;li&gt;Whether the order is correct&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;As more parameters are added, developers often introduce:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Constructor overloading&lt;/li&gt;
+&lt;li&gt;Optional parameters&lt;/li&gt;
+&lt;li&gt;Long parameter lists&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All of these solutions work—but they don’t scale well.&lt;/p&gt;
+&lt;h2&gt;The Intent of the Builder Pattern&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;the-intent-of-the-builder-pattern&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#the-intent-of-the-builder-pattern&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200&#34;&gt;
+  &lt;p class=&#34;hx-flex hx-items-center hx-font-medium&#34;&gt;&lt;svg height=16px class=&#34;hx-inline-block hx-align-middle hx-mr-2&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&#34;/&gt;&lt;/svg&gt;Important&lt;/p&gt;
+
+  &lt;div class=&#34;hx-w-full hx-min-w-0 hx-leading-7&#34;&gt;
+    &lt;div class=&#34;hx-mt-6 hx-leading-7 first:hx-mt-0&#34;&gt;&lt;p&gt;“Separate the construction of a complex object from its representation so that the same construction process can create different representations.”&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;In simpler terms:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The object is built incrementally&lt;/li&gt;
+&lt;li&gt;Construction logic is separated from business logic&lt;/li&gt;
+&lt;li&gt;The final object is only exposed once it is complete&lt;/li&gt;
+&lt;li&gt;The Builder Pattern focuses on how an object is created, not just what it is.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;When Should You Use the Builder Pattern?&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;when-should-you-use-the-builder-pattern&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#when-should-you-use-the-builder-pattern&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Builder Pattern is especially useful when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;An object has many optional properties&lt;/li&gt;
+&lt;li&gt;Construction must happen in specific steps&lt;/li&gt;
+&lt;li&gt;The same object can be built in different variations&lt;/li&gt;
+&lt;li&gt;You want to avoid constructor telescoping&lt;/li&gt;
+&lt;li&gt;You want more readable and expressive object creation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Fluent and Non-Fluent Builder Patterns&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;fluent-and-non-fluent-builder-patterns&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fluent-and-non-fluent-builder-patterns&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Builder Pattern is often associated with fluent APIs and method chaining. However, fluent builders are only one variation of the pattern. In practice, there are two commonly used styles: non-fluent (classic) and fluent (modern) builders.
+Both follow the same core idea—constructing a complex object step by step—but they differ in how the steps are expressed.&lt;/p&gt;
+&lt;h2&gt;Non-Fluent Builder (Classic GoF Style)&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;non-fluent-builder-classic-gof-style&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#non-fluent-builder-classic-gof-style&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The non-fluent builder is the original form described in the Gang of Four design patterns book. In this style, builder methods typically return void, and each method represents a distinct construction step.&lt;/p&gt;
+&lt;h3&gt;Characteristics&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;characteristics&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#characteristics&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Builder methods return void&lt;/li&gt;
+&lt;li&gt;Construction happens through explicit steps&lt;/li&gt;
+&lt;li&gt;Order of method calls often matters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Example Usage&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;example-usage&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#example-usage&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;BuildHeader&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;BuildBody&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;BuildFooter&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Here, each method modifies the internal state of the builder. Once all steps are completed, the final object is retrieved, usually through a separate method such as &lt;code&gt;GetResult()&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;When to Use&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;when-to-use&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#when-to-use&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;When the construction process is complex&lt;/li&gt;
+&lt;li&gt;When build steps must be enforced or ordered&lt;/li&gt;
+&lt;li&gt;When the same construction process should create different representations&lt;/li&gt;
+&lt;li&gt;A real-world example of this style is ASP.NET Core’s &lt;code&gt;IApplicationBuilder&lt;/code&gt;, where the HTTP request pipeline is built step by step using &lt;code&gt;UseXyz()&lt;/code&gt; methods.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Implementation (Example 1)&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;implementation-example-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#implementation-example-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;iframe frameborder=&#34;0&#34; style=&#34;width:100%;height:430px;&#34; src=&#34;https://viewer.diagrams.net/?tags=%7B%7D&amp;lightbox=1&amp;highlight=00000A&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=NonFluentBuilder1.drawio&amp;transparent=1&amp;dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload&#34; allowtransparency=&#34;true&#34;&gt;&lt;/iframe&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsServiceTests.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;DeploymentPipeline&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;bool&lt;/span&gt; ConfigurationValidated &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;bool&lt;/span&gt; ArtifactsBuilt &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;bool&lt;/span&gt; TestsExecuted &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;bool&lt;/span&gt; Deployed &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;bool&lt;/span&gt; Verified &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsServiceTests.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;IDeploymentPipelineBuilder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; ValidateConfiguration&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; BuildArtifacts&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; RunTests&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; Deploy&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; Verify&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    DeploymentPipeline GetResult&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsServiceTests.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;ProductionDeploymentBuilder&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;:&lt;/span&gt; IDeploymentPipelineBuilder
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;readonly&lt;/span&gt; DeploymentPipeline _pipeline &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; ValidateConfiguration&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#3e4460&#34;&gt;// Setting ConfigurationValidated to true for simulation purposes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ConfigurationValidated &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; BuildArtifacts&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;(!&lt;/span&gt;_pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ConfigurationValidated&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; InvalidOperationException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Configuration must be validated first.&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ArtifactsBuilt &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; RunTests&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;(!&lt;/span&gt;_pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ArtifactsBuilt&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; InvalidOperationException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Artifacts must be built before tests.&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;TestsExecuted &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; Deploy&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;(!&lt;/span&gt;_pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;TestsExecuted&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; InvalidOperationException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Tests must pass before deployment.&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Deployed &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;void&lt;/span&gt; Verify&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#56b6c2&#34;&gt;(!&lt;/span&gt;_pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Deployed&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#7fbaf5&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; InvalidOperationException&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Deployment must complete before verification.&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Verified &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cf5967;background-color:#43454f&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; DeploymentPipeline GetResult&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; _pipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div class=&#34;filename not-prose&#34; dir=&#34;auto&#34;&gt;SocialMediaPostsServiceTests.cs&lt;/div&gt;&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#ecbe7b&#34;&gt;DeploymentDirector&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;IDeploymentPipelineBuilder builder&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#7fbaf5&#34;&gt;public&lt;/span&gt; DeploymentPipeline ConstructFullPipeline&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;ValidateConfiguration&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;BuildArtifacts&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;RunTests&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Deploy&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Verify&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#7fbaf5&#34;&gt;return&lt;/span&gt; builder&lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;GetResult&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Implementation (Example 2)&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;implementation-example-2&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#implementation-example-2&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;iframe frameborder=&#34;0&#34; style=&#34;width:100%;height:420px;&#34; src=&#34;https://viewer.diagrams.net/?tags=%7B%7D&amp;lightbox=1&amp;highlight=000000&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=NonFluent2.drawio&amp;transparent=1&amp;dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload&#34; allowtransparency=&#34;true&#34;&gt;&lt;/iframe&gt;
+&lt;h2&gt;Fluent Builder (Modern Variation)&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;fluent-builder-modern-variation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fluent-builder-modern-variation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The fluent builder is a modern variation that improves readability by returning the builder instance (this) from each method. This allows multiple build steps to be chained together in a single expression.&lt;/p&gt;
+&lt;h3&gt;Characteristics&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;characteristics-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#characteristics-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Builder methods return the builder itself&lt;/li&gt;
+&lt;li&gt;Enables method chaining&lt;/li&gt;
+&lt;li&gt;Emphasizes readability and developer experience&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Example Usage&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;example-usage-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#example-usage-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#57c7ff;font-weight:bold&#34;&gt;var&lt;/span&gt; report &lt;span style=&#34;color:#56b6c2&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#7fbaf5&#34;&gt;new&lt;/span&gt; ReportBuilder&lt;span style=&#34;color:#56b6c2&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;WithHeader&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Header&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;WithBody&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Body&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;WithFooter&lt;span style=&#34;color:#56b6c2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#82cc6a&#34;&gt;&amp;#34;Footer&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#56b6c2&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#56b6c2&#34;&gt;.&lt;/span&gt;Build&lt;span style=&#34;color:#56b6c2&#34;&gt;();&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This style is especially popular in public APIs, SDKs, and configuration-heavy code, where clarity and ease of use are important.&lt;/p&gt;
+&lt;h3&gt;When to Use&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;when-to-use-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#when-to-use-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;When an object has many optional parameters&lt;/li&gt;
+&lt;li&gt;When API usability and readability matter&lt;/li&gt;
+&lt;li&gt;When developers interact directly with the builder&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Implementation&lt;span class=&#34;hx-absolute -hx-mt-20&#34; id=&#34;implementation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#implementation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;iframe frameborder=&#34;0&#34; style=&#34;width:100%;height:450px;&#34; src=&#34;https://viewer.diagrams.net/?tags=%7B%7D&amp;lightbox=1&amp;highlight=00000D&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=FluentBuilder.drawio&amp;transparent=1&amp;dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload&#34; allowtransparency=&#34;true&#34;&gt;&lt;/iframe&gt;
+
+      </description>
+    </item>
+    
+    <item>
       <title>Mocking Request Handling by HTTP Client</title>
       <link>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</link>
       <pubDate>Sun, 18 May 2025 13:47:48 +0200</pubDate>
@@ -383,7 +663,7 @@
 &lt;p&gt;You can find the codes in the following GitHub repository.&lt;/p&gt;
 &lt;div class=&#34;hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose&#34; style=&#34;--hextra-cards-grid-cols: 1;&#34;&gt;
 &lt;a
-  class=&#34;hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900&#34;href=&#34;https://github.com/vicky-sh/Mocking-Request-Handling-by-HTTP-Client&#34;
+  class=&#34;hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900&#34;href=&#34;https://github.dev/vicky-sh/Mocking-Request-Handling-by-HTTP-Client&#34;
     target=&#34;_blank&#34; rel=&#34;noreferrer&#34;&gt;&lt;span class=&#34;hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50&#34;&gt;&lt;svg fill=&#34;currentColor&#34; viewBox=&#34;3 3 18 18&#34;&gt;
   &lt;path d=&#34;M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z&#34;&gt;&lt;/path&gt;
 &lt;/svg&gt;

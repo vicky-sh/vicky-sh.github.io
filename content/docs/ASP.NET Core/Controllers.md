@@ -1,6 +1,6 @@
 ---
 date: "2025-05-01T13:55:09+02:00"
-draft: false
+draft: true
 title: "Controllers"
 cascade:
   type: docs

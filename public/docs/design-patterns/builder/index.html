@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Builder – vkeysspace</title>
+  <meta name="description" content="Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read. This is where the Builder Pattern comes into play. The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.
+The Problem: Complex Object Construction Consider an object with many optional parameters:" /><link rel="canonical" href="http://localhost:1313/docs/design-patterns/builder/" itemprop="url" />
+
+<meta property="og:title" content="Builder" />
+<meta property="og:description" content="Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read.
+This is where the Builder Pattern comes into play.
+The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.
+The Problem: Complex Object Construction
+    Consider an object with many optional parameters:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/docs/design-patterns/builder/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2025-12-24T18:35:17+05:30" />
+<meta property="article:modified_time" content="2025-12-24T18:35:17+05:30" />
+
+  <meta itemprop="name" content="Builder">
+  <meta itemprop="description" content="Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read. This is where the Builder Pattern comes into play. The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.
+The Problem: Complex Object Construction Consider an object with many optional parameters:">
+  <meta itemprop="datePublished" content="2025-12-24T18:35:17+05:30">
+  <meta itemprop="dateModified" content="2025-12-24T18:35:17+05:30">
+  <meta itemprop="wordCount" content="735">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Builder">
+  <meta name="twitter:description" content="Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read. This is where the Builder Pattern comes into play. The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.
+The Problem: Complex Object Construction Consider an object with many optional parameters:">
+
+    <link href="/css/compiled/main.css" rel="stylesheet" />
+
+
+
+  <link href="/css/custom.css" rel="stylesheet" />
+
+
+  <script>
+     
+    const defaultTheme = 'dark';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  
+</head>
+
+  
+    
+    
+      
+        <link rel="stylesheet" href="/css/main.css">
+      
+    
+  
+
+  </head>
+  
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-X91L7SY6WR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-X91L7SY6WR");
+  </script>
+  <body dir="ltr"><div class="nav-container hx-sticky hx-top-0 hx-z-20 hx-w-full hx-bg-transparent print:hx-hidden">
+  <div class="nav-container-blur hx-pointer-events-none hx-absolute hx-z-[-1] hx-h-full hx-w-full hx-bg-white dark:hx-bg-dark hx-shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] contrast-more:hx-shadow-[0_0_0_1px_#000] dark:hx-shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] contrast-more:dark:hx-shadow-[0_0_0_1px_#fff]"></div>
+
+  <nav class="hx-mx-auto hx-flex hx-items-center hx-justify-end hx-gap-2 hx-h-16 hx-px-6 hx-max-w-[90rem]">
+    <a class="hx-flex hx-items-center hover:hx-opacity-75 ltr:hx-mr-auto rtl:hx-ml-auto" href="/">
+        <img class="hx-mr-2 hx-block dark:hx-hidden" src="/images/myLogo.png" alt="vkeysspace" height="20" width="40" />
+        <img class="hx-mr-2 hx-hidden dark:hx-block" src="/images/myLogo.png" alt="vkeysspace" height="20" width="40" />
+        <span class="hx-mr-2 hx-font-extrabold hx-inline hx-select-none" title="vkeysspace">vkeysspace</span>
+    </a><a
+            title="Posts"
+            href="/docs"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-font-medium"
+          >
+            <span class="hx-text-center">Posts</span>
+          </a><a
+            title="Blogs"
+            href="/blogs"
+            
+            class="hx-text-sm contrast-more:hx-text-gray-700 contrast-more:dark:hx-text-gray-100 hx-relative -hx-ml-2 hx-hidden hx-whitespace-nowrap hx-p-2 md:hx-inline-block hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200"
+          >
+            <span class="hx-text-center">Blogs</span>
+          </a><div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+          <a class="hx-p-2 hx-text-current" target="_blank" rel="noreferrer" href="https://github.com/vicky-sh" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx-sr-only">GitHub</span>
+          </a><button type="button" aria-label="Menu" class="hamburger-menu -hx-mr-2 hx-rounded hx-p-2 active:hx-bg-gray-400/20 md:hx-hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx-mx-auto hx-flex hx-max-w-screen-xl'>
+    <div class="mobile-menu-overlay [transition:background-color_1.5s_ease] hx-fixed hx-inset-0 hx-z-10 hx-bg-black/80 dark:hx-bg-black/60 hx-hidden"></div>
+<aside class="sidebar-container hx-flex hx-flex-col print:hx-hidden md:hx-top-16 md:hx-shrink-0 md:hx-w-64 md:hx-self-start max-md:[transform:translate3d(0,-100%,0)] md:hx-sticky">
+  
+  <div class="hx-px-4 hx-pt-4 md:hx-hidden">
+    <div class="search-wrapper hx-relative md:hx-w-64">
+  <div class="hx-relative hx-flex hx-items-center hx-text-gray-900 contrast-more:hx-text-gray-800 dark:hx-text-gray-300 contrast-more:dark:hx-text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx-block hx-w-full hx-appearance-none hx-rounded-lg hx-px-3 hx-py-2 hx-transition-colors hx-text-base hx-leading-tight md:hx-text-sm hx-bg-black/[.05] dark:hx-bg-gray-50/10 focus:hx-bg-white dark:focus:hx-bg-dark placeholder:hx-text-gray-500 dark:placeholder:hx-text-gray-400 contrast-more:hx-border contrast-more:hx-border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx-absolute hx-my-1.5 hx-select-none ltr:hx-right-1.5 rtl:hx-left-1.5 hx-h-5 hx-rounded hx-bg-white hx-px-1.5 hx-font-mono hx-text-[10px] hx-font-medium hx-text-gray-500 hx-border dark:hx-border-gray-100/20 dark:hx-bg-dark/50 contrast-more:hx-border-current contrast-more:hx-text-current contrast-more:dark:hx-border-current hx-items-center hx-gap-1 hx-transition-opacity hx-pointer-events-none hx-hidden sm:hx-flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx-hidden hx-border hx-border-gray-200 hx-bg-white hx-text-gray-100 dark:hx-border-neutral-800 dark:hx-bg-neutral-900 hx-absolute hx-top-full hx-z-20 hx-mt-2 hx-overflow-auto hx-overscroll-contain hx-rounded-xl hx-py-2.5 hx-shadow-xl hx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:hx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx-inset-x-0 ltr:md:hx-left-auto rtl:md:hx-right-auto contrast-more:hx-border contrast-more:hx-border-gray-900 contrast-more:dark:hx-border-gray-50 hx-w-screen hx-min-h-[100px] hx-max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx-overflow-y-auto hx-overflow-x-hidden hx-p-4 hx-grow md:hx-h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx-flex hx-flex-col hx-gap-1 md:hx-hidden">
+      
+      
+          <li class="open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/"
+    
+  >Posts
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/design-patterns/"
+    
+  >Design Patterns
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/design-patterns/factory/"
+    
+  >Factory
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx-bg-primary-100 hx-font-semibold hx-text-primary-800 contrast-more:hx-border contrast-more:hx-border-primary-500 dark:hx-bg-primary-400/10 dark:hx-text-primary-600 contrast-more:dark:hx-border-primary-500"
+    href="/docs/design-patterns/builder/"
+    
+  >Builder
+    </a>
+  
+    <ul class='hx-flex hx-flex-col hx-gap-1 hx-relative before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] dark:before:hx-bg-neutral-800 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-pr-3 rtl:before:hx-right-0 ltr:hx-ml-3 rtl:hx-mr-3'><li>
+              <a
+                href="#the-problem-complex-object-construction"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >The Problem: Complex Object Construction</a>
+            </li>
+          <li>
+              <a
+                href="#the-intent-of-the-builder-pattern"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >The Intent of the Builder Pattern</a>
+            </li>
+          <li>
+              <a
+                href="#when-should-you-use-the-builder-pattern"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >When Should You Use the Builder Pattern?</a>
+            </li>
+          <li>
+              <a
+                href="#fluent-and-non-fluent-builder-patterns"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Fluent and Non-Fluent Builder Patterns</a>
+            </li>
+          <li>
+              <a
+                href="#non-fluent-builder-classic-gof-style"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Non-Fluent Builder (Classic GoF Style)</a>
+            </li>
+          <li>
+              <a
+                href="#fluent-builder-modern-variation"
+                class="hx-flex hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [word-break:break-word] hx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:hx-border hx-gap-2 before:hx-opacity-25 before:hx-content-['#'] hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:hx-text-gray-900 contrast-more:dark:hx-text-gray-50 contrast-more:hx-border-transparent contrast-more:hover:hx-border-gray-900 contrast-more:dark:hover:hx-border-gray-50"
+              >Fluent Builder (Modern Variation)</a>
+            </li>
+          </ul>
+  
+              
+            </li></ul>
+      </div>
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/"
+    
+  >ASP.NET Core
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a>
+              <div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/mockinghttpclient/"
+    
+  >Mocking Request Handling by HTTP Client
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/controllers/"
+    
+  >Controllers
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/httpclientextensions/"
+    
+  >Effectively Handling HTTP Requests
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+    </ul>
+
+    <ul class="hx-flex hx-flex-col hx-gap-1 max-md:hx-hidden">
+        
+          <li class="open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/design-patterns/"
+    
+  >Design Patterns
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/design-patterns/factory/"
+    
+  >Factory
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col open"><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx-bg-primary-100 hx-font-semibold hx-text-primary-800 contrast-more:hx-border contrast-more:hx-border-primary-500 dark:hx-bg-primary-400/10 dark:hx-text-primary-600 contrast-more:dark:hx-border-primary-500"
+    href="/docs/design-patterns/builder/"
+    
+  >Builder
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/"
+    
+  >ASP.NET Core
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
+    </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
+        <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/mockinghttpclient/"
+    
+  >Mocking Request Handling by HTTP Client
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/controllers/"
+    
+  >Controllers
+    </a>
+              
+            </li><li class="hx-flex hx-flex-col "><a
+    class="hx-flex hx-items-center hx-justify-between hx-gap-2 hx-cursor-pointer hx-rounded hx-px-2 hx-py-1.5 hx-text-sm hx-transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
+    href="/docs/asp.net-core/httpclientextensions/"
+    
+  >Effectively Handling HTTP Requests
+    </a>
+              
+            </li></ul>
+      </div></li>
+        
+      </ul>
+    </div>
+  
+  </aside>
+    
+<nav class="hextra-toc hx-order-last hx-hidden hx-w-64 hx-shrink-0 xl:hx-block print:hx-hidden hx-px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx-sticky hx-top-16 hx-overflow-y-auto hx-pr-4 hx-pt-6 hx-text-sm [hyphens:auto] hx-max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] ltr:hx--mr-4 rtl:hx--ml-4"><p class="hx-mb-4 hx-font-semibold hx-tracking-tight">On this page</p><ul>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#the-problem-complex-object-construction">The Problem: Complex Object Construction
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#the-intent-of-the-builder-pattern">The Intent of the Builder Pattern
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#when-should-you-use-the-builder-pattern">When Should You Use the Builder Pattern?
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#fluent-and-non-fluent-builder-patterns">Fluent and Non-Fluent Builder Patterns
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#non-fluent-builder-classic-gof-style">Non-Fluent Builder (Classic GoF Style)
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#characteristics">Characteristics
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#example-usage">Example Usage
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#when-to-use">When to Use
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#implementation-example-1">Implementation (Example 1)
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#implementation-example-2">Implementation (Example 2)
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="hx-font-semibold hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#fluent-builder-modern-variation">Fluent Builder (Modern Variation)
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#characteristics-1">Characteristics
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#example-usage-1">Example Usage
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#when-to-use-1">When to Use
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#implementation">Implementation
+        </a>
+      </li></ul>
+      <div class="hx-mt-8 hx-border-t hx-bg-white hx-pt-8 hx-shadow-[0_-12px_16px_white] dark:hx-bg-dark dark:hx-shadow-[0_-12px_16px_#111] hx-sticky hx-bottom-0 hx-flex hx-flex-col hx-items-start hx-gap-2 hx-pb-8 dark:hx-border-neutral-800 contrast-more:hx-border-t contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-border-neutral-400">
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx-transition-all hx-duration-75 hx-opacity-0 hx-text-xs hx-font-medium hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-100 contrast-more:hx-text-gray-800 contrast-more:dark:hx-text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx-inline ltr:hx-ml-1 rtl:hx-mr-1 hx-h-3.5 hx-w-3.5 hx-border hx-rounded-full hx-border-gray-500 hover:hx-border-gray-900 dark:hx-border-gray-400 dark:hover:hx-border-gray-100 contrast-more:hx-border-gray-800 contrast-more:dark:hx-border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx-w-full hx-break-words hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-min-w-0 hx-justify-center hx-pb-8 hx-pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx-w-full hx-min-w-0 hx-max-w-6xl hx-px-6 hx-pt-4 md:hx-px-12">
+        
+  <div class="hx-mt-1.5 hx-flex hx-items-center hx-gap-1 hx-overflow-hidden hx-text-sm hx-text-gray-500 dark:hx-text-gray-400 contrast-more:hx-text-current">
+        <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
+          <a href="/docs/">Posts</a>
+        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
+          <a href="/docs/design-patterns/">Design Patterns</a>
+        </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx-whitespace-nowrap hx-transition-colors hx-font-medium hx-text-gray-700 contrast-more:hx-font-bold contrast-more:hx-text-current dark:hx-text-gray-100 contrast-more:dark:hx-text-current">Builder</div>
+  </div>
+
+        <div class="content">
+          <h1>Builder</h1>
+          <p>Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read.
+This is where the Builder Pattern comes into play.
+The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.</p>
+<h2>The Problem: Complex Object Construction<span class="hx-absolute -hx-mt-20" id="the-problem-complex-object-construction"></span>
+    <a href="#the-problem-complex-object-construction" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Consider an object with many optional parameters:</p>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> user <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> User<span style="color:#56b6c2">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#82cc6a">&#34;vicky&#34;</span><span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#82cc6a">&#34;vicky@example.com&#34;</span><span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf5967;background-color:#43454f">null</span><span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf5967;background-color:#43454f">false</span><span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>    DateTime<span style="color:#56b6c2">.</span>Now
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>At first glance, it’s not clear:</strong></p>
+<ul>
+<li>What each parameter represents</li>
+<li>Which values are optional</li>
+<li>Whether the order is correct</li>
+</ul>
+<p><strong>As more parameters are added, developers often introduce:</strong></p>
+<ul>
+<li>Constructor overloading</li>
+<li>Optional parameters</li>
+<li>Long parameter lists</li>
+</ul>
+<p>All of these solutions work—but they don’t scale well.</p>
+<h2>The Intent of the Builder Pattern<span class="hx-absolute -hx-mt-20" id="the-intent-of-the-builder-pattern"></span>
+    <a href="#the-intent-of-the-builder-pattern" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><div class="hx-overflow-x-auto hx-mt-6 hx-flex hx-flex-col hx-rounded-lg hx-border hx-py-4 hx-px-4 contrast-more:hx-border-current contrast-more:dark:hx-border-current hx-border-indigo-200 hx-bg-indigo-100 hx-text-indigo-900 dark:hx-border-indigo-200/30 dark:hx-bg-indigo-900/30 dark:hx-text-indigo-200">
+  <p class="hx-flex hx-items-center hx-font-medium"><svg height=16px class="hx-inline-block hx-align-middle hx-mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Important</p>
+
+  <div class="hx-w-full hx-min-w-0 hx-leading-7">
+    <div class="hx-mt-6 hx-leading-7 first:hx-mt-0"><p>“Separate the construction of a complex object from its representation so that the same construction process can create different representations.”</p></div>
+  </div>
+</div>
+<p><strong>In simpler terms:</strong></p>
+<ul>
+<li>The object is built incrementally</li>
+<li>Construction logic is separated from business logic</li>
+<li>The final object is only exposed once it is complete</li>
+<li>The Builder Pattern focuses on how an object is created, not just what it is.</li>
+</ul>
+<h2>When Should You Use the Builder Pattern?<span class="hx-absolute -hx-mt-20" id="when-should-you-use-the-builder-pattern"></span>
+    <a href="#when-should-you-use-the-builder-pattern" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The Builder Pattern is especially useful when:</p>
+<ul>
+<li>An object has many optional properties</li>
+<li>Construction must happen in specific steps</li>
+<li>The same object can be built in different variations</li>
+<li>You want to avoid constructor telescoping</li>
+<li>You want more readable and expressive object creation</li>
+</ul>
+<h2>Fluent and Non-Fluent Builder Patterns<span class="hx-absolute -hx-mt-20" id="fluent-and-non-fluent-builder-patterns"></span>
+    <a href="#fluent-and-non-fluent-builder-patterns" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The Builder Pattern is often associated with fluent APIs and method chaining. However, fluent builders are only one variation of the pattern. In practice, there are two commonly used styles: non-fluent (classic) and fluent (modern) builders.
+Both follow the same core idea—constructing a complex object step by step—but they differ in how the steps are expressed.</p>
+<h2>Non-Fluent Builder (Classic GoF Style)<span class="hx-absolute -hx-mt-20" id="non-fluent-builder-classic-gof-style"></span>
+    <a href="#non-fluent-builder-classic-gof-style" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The non-fluent builder is the original form described in the Gang of Four design patterns book. In this style, builder methods typically return void, and each method represents a distinct construction step.</p>
+<h3>Characteristics<span class="hx-absolute -hx-mt-20" id="characteristics"></span>
+    <a href="#characteristics" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Builder methods return void</li>
+<li>Construction happens through explicit steps</li>
+<li>Order of method calls often matters</li>
+</ul>
+<h3>Example Usage<span class="hx-absolute -hx-mt-20" id="example-usage"></span>
+    <a href="#example-usage" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>BuildHeader<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>BuildBody<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>BuildFooter<span style="color:#56b6c2">();</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<p>Here, each method modifies the internal state of the builder. Once all steps are completed, the final object is retrieved, usually through a separate method such as <code>GetResult()</code>.</p>
+<h3>When to Use<span class="hx-absolute -hx-mt-20" id="when-to-use"></span>
+    <a href="#when-to-use" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>When the construction process is complex</li>
+<li>When build steps must be enforced or ordered</li>
+<li>When the same construction process should create different representations</li>
+<li>A real-world example of this style is ASP.NET Core’s <code>IApplicationBuilder</code>, where the HTTP request pipeline is built step by step using <code>UseXyz()</code> methods.</li>
+</ul>
+<h3>Implementation (Example 1)<span class="hx-absolute -hx-mt-20" id="implementation-example-1"></span>
+    <a href="#implementation-example-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=00000A&edit=_blank&layers=1&nav=1&title=NonFluentBuilder1.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload" allowtransparency="true"></iframe>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentPipeline</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> ConfigurationValidated <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> ArtifactsBuilt <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> TestsExecuted <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> Deployed <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> Verified <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">IDeploymentPipelineBuilder</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> ValidateConfiguration<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> BuildArtifacts<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> RunTests<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> Deploy<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> Verify<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    DeploymentPipeline GetResult<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">ProductionDeploymentBuilder</span> <span style="color:#56b6c2">:</span> IDeploymentPipelineBuilder
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">private</span> <span style="color:#7fbaf5">readonly</span> DeploymentPipeline _pipeline <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span><span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> ValidateConfiguration<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3e4460">// Setting ConfigurationValidated to true for simulation purposes</span>
+</span></span><span style="display:flex;"><span>        _pipeline<span style="color:#56b6c2">.</span>ConfigurationValidated <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> BuildArtifacts<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">if</span> <span style="color:#56b6c2">(!</span>_pipeline<span style="color:#56b6c2">.</span>ConfigurationValidated<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#7fbaf5">throw</span> <span style="color:#7fbaf5">new</span> InvalidOperationException<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Configuration must be validated first.&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        _pipeline<span style="color:#56b6c2">.</span>ArtifactsBuilt <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> RunTests<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">if</span> <span style="color:#56b6c2">(!</span>_pipeline<span style="color:#56b6c2">.</span>ArtifactsBuilt<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#7fbaf5">throw</span> <span style="color:#7fbaf5">new</span> InvalidOperationException<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Artifacts must be built before tests.&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        _pipeline<span style="color:#56b6c2">.</span>TestsExecuted <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> Deploy<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">if</span> <span style="color:#56b6c2">(!</span>_pipeline<span style="color:#56b6c2">.</span>TestsExecuted<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#7fbaf5">throw</span> <span style="color:#7fbaf5">new</span> InvalidOperationException<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Tests must pass before deployment.&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        _pipeline<span style="color:#56b6c2">.</span>Deployed <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> Verify<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">if</span> <span style="color:#56b6c2">(!</span>_pipeline<span style="color:#56b6c2">.</span>Deployed<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#7fbaf5">throw</span> <span style="color:#7fbaf5">new</span> InvalidOperationException<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Deployment must complete before verification.&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        _pipeline<span style="color:#56b6c2">.</span>Verified <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> DeploymentPipeline GetResult<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> _pipeline<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentDirector</span><span style="color:#56b6c2">(</span>IDeploymentPipelineBuilder builder<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> DeploymentPipeline ConstructFullPipeline<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        builder<span style="color:#56b6c2">.</span>ValidateConfiguration<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        builder<span style="color:#56b6c2">.</span>BuildArtifacts<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        builder<span style="color:#56b6c2">.</span>RunTests<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        builder<span style="color:#56b6c2">.</span>Deploy<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        builder<span style="color:#56b6c2">.</span>Verify<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> builder<span style="color:#56b6c2">.</span>GetResult<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Implementation (Example 2)<span class="hx-absolute -hx-mt-20" id="implementation-example-2"></span>
+    <a href="#implementation-example-2" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:420px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluent2.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload" allowtransparency="true"></iframe>
+<h2>Fluent Builder (Modern Variation)<span class="hx-absolute -hx-mt-20" id="fluent-builder-modern-variation"></span>
+    <a href="#fluent-builder-modern-variation" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The fluent builder is a modern variation that improves readability by returning the builder instance (this) from each method. This allows multiple build steps to be chained together in a single expression.</p>
+<h3>Characteristics<span class="hx-absolute -hx-mt-20" id="characteristics-1"></span>
+    <a href="#characteristics-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Builder methods return the builder itself</li>
+<li>Enables method chaining</li>
+<li>Emphasizes readability and developer experience</li>
+</ul>
+<h3>Example Usage<span class="hx-absolute -hx-mt-20" id="example-usage-1"></span>
+    <a href="#example-usage-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> report <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> ReportBuilder<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>WithHeader<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Header&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>WithBody<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Body&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>WithFooter<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Footer&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>Build<span style="color:#56b6c2">();</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<p>This style is especially popular in public APIs, SDKs, and configuration-heavy code, where clarity and ease of use are important.</p>
+<h3>When to Use<span class="hx-absolute -hx-mt-20" id="when-to-use-1"></span>
+    <a href="#when-to-use-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>When an object has many optional parameters</li>
+<li>When API usability and readability matter</li>
+<li>When developers interact directly with the builder</li>
+</ul>
+<h3>Implementation<span class="hx-absolute -hx-mt-20" id="implementation"></span>
+    <a href="#implementation" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:450px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=00000D&edit=_blank&layers=1&nav=1&title=FluentBuilder.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload" allowtransparency="true"></iframe>
+
+        </div>
+        <div class="hx-mt-16"></div>
+        <div class="hx-mb-8 hx-flex hx-items-center hx-border-t hx-pt-8 dark:hx-border-neutral-800 contrast-more:hx-border-neutral-400 dark:contrast-more:hx-border-neutral-400 print:hx-hidden"><a
+        href="/docs/design-patterns/factory/"
+        title="Factory"
+        class="hx-flex hx-max-w-[50%] hx-items-center hx-gap-1 hx-py-4 hx-text-base hx-font-medium hx-text-gray-600 hx-transition-colors [word-break:break-word] hover:hx-text-primary-600 dark:hx-text-gray-300 md:hx-text-lg ltr:hx-pr-4 rtl:hx-pl-4"
+      ><svg class="hx-inline hx-h-5 hx-shrink-0 ltr:hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Factory</a></div>
+        
+      </main>
+    </article>
+  </div>
+ <footer class="hextra-footer hx-bg-gray-100 hx-pb-[env(safe-area-inset-bottom)] dark:hx-bg-neutral-900 print:hx-bg-transparent"><div
+      class="hextra-custom-footer hx-max-w-screen-xl hx-pl-[max(env(safe-area-inset-left),1.5rem)] hx-pr-[max(env(safe-area-inset-right),1.5rem)] hx-text-gray-600 dark:hx-text-gray-400"
+    ></div><div
+        class="hx-max-w-screen-xl hx-mx-auto hx-flex hx-justify-center hx-py-12 hx-pl-[max(env(safe-area-inset-left),1.5rem)] hx-pr-[max(env(safe-area-inset-right),1.5rem)] hx-text-gray-600 dark:hx-text-gray-400 md:hx-justify-start"
+      >
+        <div class="hx-flex hx-w-full hx-flex-col hx-items-center sm:hx-items-start"><div class="hx-mt-6 hx-text-xs">© 2025 Copy Anything You Like!</div></div>
+      </div></footer>  <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/lib/flexsearch/flexsearch.bundle.min.0425860527cc9968f9f049421c7a56b39327d475e2e3a8f550416be3a9134327.js" integrity="sha256-BCWGBSfMmWj58ElCHHpWs5Mn1HXi46j1UEFr46kTQyc="></script>
+    <script defer src="/en.search.js" integrity=""></script>
+  </body>
+</html>

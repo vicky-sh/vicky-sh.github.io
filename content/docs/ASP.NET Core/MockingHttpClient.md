@@ -305,5 +305,5 @@ In this test, we inject a mock `IHttpClientFactory` into the service. The factor
 You can find the codes in the following GitHub repository.
 
 {{< cards cols="1" >}}
-{{< card link="https://github.com/vicky-sh/Mocking-Request-Handling-by-HTTP-Client" title="Mocking-Request-Handling-by-HTTP-Client" icon="github" >}}
+{{< card link="https://github.dev/vicky-sh/Mocking-Request-Handling-by-HTTP-Client" title="Mocking-Request-Handling-by-HTTP-Client" icon="github" >}}
 {{< /cards >}}
