@@ -2,6 +2,7 @@
 date: "2025-12-21T11:58:41+05:30"
 draft: true
 title: "Design Patterns"
+weight: 2
 ---
 
 ## Posts in this area

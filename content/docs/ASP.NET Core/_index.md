@@ -2,6 +2,7 @@
 date: "2025-05-01T13:51:25+02:00"
 draft: false
 title: "ASP.NET Core"
+weight: 1
 ---
 
 ## Posts in this area
