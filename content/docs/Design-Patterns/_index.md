@@ -1,6 +1,6 @@
 ---
 date: "2025-12-21T11:58:41+05:30"
-draft: true
+draft: false
 title: "Design Patterns"
 weight: 2
 ---

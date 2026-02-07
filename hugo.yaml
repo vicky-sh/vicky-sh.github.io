@@ -54,10 +54,10 @@ params:
       height: 20
 
   footer:
-      enable: true
-      displayCopyright: true
-      displayPoweredBy: false
-      width: normal
+    enable: true
+    displayCopyright: true
+    displayPoweredBy: false
+    width: normal
 
 markup:
   highlight:

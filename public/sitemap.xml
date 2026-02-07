@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/docs/asp.net-core/</loc>
+    <loc>http://localhost:1313/docs/asp-dotnet-core/</loc>
     <lastmod>2025-05-01T13:51:25+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/design-patterns/</loc>
@@ -14,13 +14,13 @@
     <loc>http://localhost:1313/docs/design-patterns/builder/</loc>
     <lastmod>2025-12-24T18:35:17+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</loc>
+    <loc>http://localhost:1313/docs/asp-dotnet-core/mockinghttpclient/</loc>
     <lastmod>2025-05-18T13:47:48+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docs/asp.net-core/controllers/</loc>
+    <loc>http://localhost:1313/docs/asp-dotnet-core/controllers/</loc>
     <lastmod>2025-05-01T13:55:09+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/docs/asp.net-core/httpclientextensions/</loc>
+    <loc>http://localhost:1313/docs/asp-dotnet-core/httpclientextensions/</loc>
     <lastmod>2025-05-01T13:47:23+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/docs/</loc>

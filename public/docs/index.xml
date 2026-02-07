@@ -297,10 +297,10 @@ Both follow the same core idea—constructing a complex object step by step—bu
     
     <item>
       <title>Mocking Request Handling by HTTP Client</title>
-      <link>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</link>
+      <link>http://localhost:1313/docs/asp-dotnet-core/mockinghttpclient/</link>
       <pubDate>Sun, 18 May 2025 13:47:48 +0200</pubDate>
       
-      <guid>http://localhost:1313/docs/asp.net-core/mockinghttpclient/</guid>
+      <guid>http://localhost:1313/docs/asp-dotnet-core/mockinghttpclient/</guid>
       <description>
         
         
@@ -676,10 +676,10 @@ Mocking-Request-Handling-by-HTTP-Client&lt;/span&gt;&lt;/a&gt;
     
     <item>
       <title>Controllers</title>
-      <link>http://localhost:1313/docs/asp.net-core/controllers/</link>
+      <link>http://localhost:1313/docs/asp-dotnet-core/controllers/</link>
       <pubDate>Thu, 01 May 2025 13:55:09 +0200</pubDate>
       
-      <guid>http://localhost:1313/docs/asp.net-core/controllers/</guid>
+      <guid>http://localhost:1313/docs/asp-dotnet-core/controllers/</guid>
       <description>
         
         
@@ -749,10 +749,10 @@ Mocking-Request-Handling-by-HTTP-Client&lt;/span&gt;&lt;/a&gt;
     
     <item>
       <title>Effectively Handling HTTP Requests</title>
-      <link>http://localhost:1313/docs/asp.net-core/httpclientextensions/</link>
+      <link>http://localhost:1313/docs/asp-dotnet-core/httpclientextensions/</link>
       <pubDate>Thu, 01 May 2025 13:47:23 +0200</pubDate>
       
-      <guid>http://localhost:1313/docs/asp.net-core/httpclientextensions/</guid>
+      <guid>http://localhost:1313/docs/asp-dotnet-core/httpclientextensions/</guid>
       <description>
         
         
