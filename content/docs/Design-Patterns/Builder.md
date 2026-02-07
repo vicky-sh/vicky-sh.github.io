@@ -95,7 +95,7 @@ Here, each method modifies the internal state of the builder. Once all steps are
 
 ### Implementation (Example 1)
 
-<iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=00000A&edit=_blank&layers=1&nav=1&title=NonFluentBuilder1.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload" allowtransparency="true"></iframe>
+<iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluentBuilder1.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload"></iframe>
 
 ```csharp {filename="SocialMediaPostsServiceTests.cs"}
 public class DeploymentPipeline
@@ -187,7 +187,7 @@ public class DeploymentDirector(IDeploymentPipelineBuilder builder)
 
 ### Implementation (Example 2)
 
-<iframe frameborder="0" style="width:100%;height:420px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluent2.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload" allowtransparency="true"></iframe>
+<iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluent2.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload"></iframe>
 
 ## Fluent Builder (Modern Variation)
 
@@ -219,4 +219,4 @@ This style is especially popular in public APIs, SDKs, and configuration-heavy c
 
 ### Implementation
 
-<iframe frameborder="0" style="width:100%;height:450px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=00000D&edit=_blank&layers=1&nav=1&title=FluentBuilder.drawio&transparent=1&dark=0#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload" allowtransparency="true"></iframe>
+<iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=FluentBuilder.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload"></iframe>
