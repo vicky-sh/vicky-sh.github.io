@@ -1,12 +1,12 @@
 ---
-date: '2025-05-18T13:47:48+02:00'
+date: "2025-05-18T13:47:48+02:00"
 draft: false
-title: 'Mocking Request Handling by HTTP Client'
+title: "Mocking Request Handling by HTTP Client"
 ---
 
-There would surely be scenarios in your application where you should use a HTTP Client to request for resources from another server. But how can you mock the behaviour of the default methods of the Http Client provided by the .NET Core Framework while writing unit tests? This post is meant to mock such HTTP request handling for unit testing. 
+There would surely be scenarios in your application where you should use a HTTP Client to request for resources from another server. But how can you mock the behaviour of the default methods of the Http Client provided by the .NET Core Framework while writing unit tests? This post is meant to mock such HTTP request handling for unit testing.
 
-Consider the following code where a service named `SocialMediaPostsService` uses a HTTP Client to request json objects from [Dummy JSON](https://dummyjson.com/docs/posts). 
+Consider the following code where a service named `SocialMediaPostsService` uses a HTTP Client to request json objects from [Dummy JSON](https://dummyjson.com/docs/posts).
 
 ```csharp {filename="SocialMediaPostsService.cs"}
 public class SocialMediaPostsService(IHttpClientFactory httpClientFactory)
@@ -60,7 +60,7 @@ public class SocialMediaPostsService(IHttpClientFactory httpClientFactory)
 > [!NOTE]
 > Using _IHttpClientFactory_ ensures efficient connection management and allows pre-configured named clients for consistent setup and reuse.
 
-Shown below is the _ISocialMediaPostsService_ interface used for dependency injection. 
+Shown below is the _ISocialMediaPostsService_ interface used for dependency injection.
 
 ```csharp {filename="ISocialMediaPostsService.cs"}
 public interface ISocialMediaPostsService
@@ -77,17 +77,17 @@ public interface ISocialMediaPostsService
 }
 ```
 
-To be able to understand how the client can be mocked, it is essential to understand how the client handles the HTTP request message. 
+To be able to understand how the client can be mocked, it is essential to understand how the client handles the HTTP request message.
 
+### In Brief
 
-### In Brief 
 {{% steps %}}
 
 ### `HttpClient` inherits from `HttpMessageInvoker`
 
 The `HttpClient` class is built on top of `HttpMessageInvoker`, which is responsible for forwarding HTTP requests.
 
-If you carefully look at the source code for [HttpClient](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs), you will notice that the class inherits from [HttpMessageInvoker](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpMessageInvoker.cs). Our Http Client's `GetAsync` method internally invokes a base method in `HttpMessageInvoker` namely: 
+If you carefully look at the source code for [HttpClient](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs), you will notice that the class inherits from [HttpMessageInvoker](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/HttpMessageInvoker.cs). Our Http Client's `GetAsync` method internally invokes a base method in `HttpMessageInvoker` namely:
 
 ```csharp{filename="HttpMessageInvoker.cs"}
 public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -109,6 +109,7 @@ protected internal virtual HttpResponseMessage Send(HttpRequestMessage request, 
 ```
 
 ### Custom handlers can override this behavior
+
 The `HttpMessageHandler` class provides the following abstract method to be overriden by an extending class to implement a custom handling of `HttpRequestMessage`.
 
 ```csharp{filename="HttpMessageHandler.cs"}
@@ -121,6 +122,7 @@ By extending `HttpMessageHandler`, we can intercept requests and return controll
 {{% /steps %}}
 
 ### Our `MockHttpMessageHandler` would look like this
+
 ```csharp{filename="MockHttpMessageHandler.cs"}
 public class MockHttpMessageHandler : HttpMessageHandler
 {
@@ -142,16 +144,16 @@ public class MockHttpMessageHandler : HttpMessageHandler
 }
 ```
 
-In the above HTTP mock handler we can create our own method `MockSend` to be overwritten when we like to write a test, but for the moment we just throw a `NotImplementedException`. We can then override the abstract method provided by `HttpMessageHandler` to return the result of our own method `MockSend`. This is how we can make sure than when the `HttpMessageHandler's` `SendAsync`method is invoked by the framework, our method `MockSend` is invoked internally. 
+In the above HTTP mock handler we can create our own method `MockSend` to be overwritten when we like to write a test, but for the moment we just throw a `NotImplementedException`. We can then override the abstract method provided by `HttpMessageHandler` to return the result of our own method `MockSend`. This is how we can make sure than when the `HttpMessageHandler's` `SendAsync`method is invoked by the framework, our method `MockSend` is invoked internally.
 
 ### `MockHttpMessageHandlerTestBase` class for reusable testing
 
 For the ease of writing tests for classes that uses a `HttpClient`, we can create a resuable class to handle everything related to our HTTP mock handler, like making our handler return a specific object and a staus code, ensure that the mock handler had received a HTTP request message with a particular `Ùri`,`HttpMethod` and `Content`. The test class uses the follwoing library:
 
-* [xUnit](https://xunit.net)
-* [NSubstitue](https://nsubstitute.github.io/docs/2010-01-01-getting-started.html)
-* [Shouldly](https://docs.shouldly.org)
-* [AutoBogus](https://github.com/nickdodd79/AutoBogus)
+- [xUnit](https://xunit.net)
+- [NSubstitue](https://nsubstitute.github.io/docs/2010-01-01-getting-started.html)
+- [Shouldly](https://docs.shouldly.org)
+- [AutoBogus](https://github.com/nickdodd79/AutoBogus)
 
 ```csharp{filename="MockHttpMessageHandlerTestBasecs"}
 public class MockHttpMessageHandlerTestBase
@@ -227,6 +229,7 @@ public class MockHttpMessageHandlerTestBase
     }
 }
 ```
+
 > [!NOTE]
 > Note how we create a `HttpClient` with our custom handler `HttpMessageHandlerMock` as the request message handler and carefully mock the `CreateClient` of the `IHttpClientFactory` to return the `HttpClient`.
 
@@ -234,6 +237,7 @@ public class MockHttpMessageHandlerTestBase
 > The above `MockHttpMessageHandlerTestBase` can be used as test base class if you use the interface `ÌHttpClientFactory` to create the `HttpClient`. Otherwise you need to modify the base class.
 
 ### Writing unit tests with `MockHttpMessageHandlerTestBase`
+
 ```csharp {filename="SocialMediaPostsServiceTests.cs"}
 public class SocialMediaPostsServiceTests : MockHttpMessageHandlerTestBase
 {
@@ -270,7 +274,7 @@ public class SocialMediaPostsServiceTests : MockHttpMessageHandlerTestBase
             postToSend,
             CancellationToken.None
         );
-        
+
         post.ShouldNotBeNull();
         post.ShouldBeEquivalentTo(postReceived);
         HttpMockHandlerShouldReceiveObject(postToSend);
@@ -300,9 +304,18 @@ public class SocialMediaPostsServiceTests : MockHttpMessageHandlerTestBase
     }
 }
 ```
+
 In this test, we inject a mock `IHttpClientFactory` into the service. The factory returns a `HttpClient` that uses our custom `MockHttpMessageHandler`. This lets us simulate HTTP responses and verify requests without making real network calls. The service uses this client just like it would in production, but everything is controlled in the test.
 
 You can find the codes in the following GitHub repository.
+
+#### See On Github Repository
+
+{{< cards cols="1" >}}
+{{< card link="https://github.com/vicky-sh/BuilderPattern.git" title="Mocking-Request-Handling-by-HTTP-Client" icon="github" >}}
+{{< /cards >}}
+
+#### Open in an Online Code Editor
 
 {{< cards cols="1" >}}
 {{< card link="https://github.dev/vicky-sh/Mocking-Request-Handling-by-HTTP-Client" title="Mocking-Request-Handling-by-HTTP-Client" icon="github" >}}

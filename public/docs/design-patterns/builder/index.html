@@ -31,7 +31,7 @@ The Problem: Complex Object Construction
 The Problem: Complex Object Construction Consider an object with many optional parameters:">
   <meta itemprop="datePublished" content="2025-12-24T18:35:17+05:30">
   <meta itemprop="dateModified" content="2025-12-24T18:35:17+05:30">
-  <meta itemprop="wordCount" content="735">
+  <meta itemprop="wordCount" content="1341">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Builder">
   <meta name="twitter:description" content="Creating objects is one of the most common tasks in software development. In simple cases, a constructor is more than enough. However, as applications grow, object creation often becomes complex, error-prone, and hard to read. This is where the Builder Pattern comes into play. The Builder Pattern helps us construct complex objects step by step, while keeping the creation logic readable, maintainable, and flexible.
@@ -186,7 +186,7 @@ The Problem: Complex Object Construction Consider an object with many optional p
       hx-text-gray-500 hover:hx-bg-gray-100 hover:hx-text-gray-900 contrast-more:hx-border contrast-more:hx-border-transparent contrast-more:hx-text-gray-900 contrast-more:hover:hx-border-gray-900 dark:hx-text-neutral-400 dark:hover:hx-bg-primary-100/5 dark:hover:hx-text-gray-50 contrast-more:dark:hx-text-gray-50 contrast-more:dark:hover:hx-border-gray-50"
     href="/docs/"
     
-  >Docs
+  >Posts
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx-h-[18px] hx-min-w-[18px] hx-rounded-sm hx-p-0.5 hover:hx-bg-gray-800/5 dark:hover:hx-bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx-origin-center hx-transition-transform rtl:-hx-rotate-180"></path></svg></span>
     </a><div class="ltr:hx-pr-0 hx-overflow-hidden">
         <ul class='hx-relative hx-flex hx-flex-col hx-gap-1 before:hx-absolute before:hx-inset-y-1 before:hx-w-px before:hx-bg-gray-200 before:hx-content-[""] ltr:hx-ml-3 ltr:hx-pl-3 ltr:before:hx-left-0 rtl:hx-mr-3 rtl:hx-pr-3 rtl:before:hx-right-0 dark:before:hx-bg-neutral-800'><li class="hx-flex hx-flex-col "><a
@@ -423,6 +423,14 @@ The Problem: Complex Object Construction Consider an object with many optional p
       <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
         <a class="ltr:hx-pl-4 rtl:hx-pr-4 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#implementation">Implementation
         </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#see-on-github-repository">See On Github Repository
+        </a>
+      </li>
+      <li class="hx-my-2 hx-scroll-my-6 hx-scroll-py-6">
+        <a class="ltr:hx-pl-8 rtl:hx-pr-8 hx-inline-block hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-300 contrast-more:hx-text-gray-900 contrast-more:hx-underline contrast-more:dark:hx-text-gray-50 hx-w-full hx-break-words" href="#open-in-an-online-code-editor">Open in an Online Code Editor
+        </a>
       </li></ul>
       <div class="hx-mt-8 hx-border-t hx-bg-white hx-pt-8 hx-shadow-[0_-12px_16px_white] dark:hx-bg-dark dark:hx-shadow-[0_-12px_16px_#111] hx-sticky hx-bottom-0 hx-flex hx-flex-col hx-items-start hx-gap-2 hx-pb-8 dark:hx-border-neutral-800 contrast-more:hx-border-t contrast-more:hx-border-neutral-400 contrast-more:hx-shadow-none contrast-more:dark:hx-border-neutral-400">
         <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx-transition-all hx-duration-75 hx-opacity-0 hx-text-xs hx-font-medium hx-text-gray-500 hover:hx-text-gray-900 dark:hx-text-gray-400 dark:hover:hx-text-gray-100 contrast-more:hx-text-gray-800 contrast-more:dark:hx-text-gray-50">
@@ -441,7 +449,7 @@ The Problem: Complex Object Construction Consider an object with many optional p
         
   <div class="hx-mt-1.5 hx-flex hx-items-center hx-gap-1 hx-overflow-hidden hx-text-sm hx-text-gray-500 dark:hx-text-gray-400 contrast-more:hx-text-current">
         <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
-          <a href="/docs/">Docs</a>
+          <a href="/docs/">Posts</a>
         </div><svg class="hx-w-3.5 hx-shrink-0 rtl:-hx-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         <div class="hx-whitespace-nowrap hx-transition-colors hx-min-w-[24px] hx-overflow-hidden hx-text-ellipsis hover:hx-text-gray-900 dark:hover:hx-text-gray-100">
           <a href="/docs/design-patterns/">Design Patterns</a>
@@ -549,13 +557,22 @@ Both follow the same core idea—constructing a complex object step by step—bu
     <a href="#implementation-example-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluentBuilder1.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload"></iframe>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 
-<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentPipeline</span>
+<div class="filename not-prose" dir="auto">DeploymentPipeline.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentPipeline</span>
 </span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> ConfigurationValidated <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> ArtifactsBuilt <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> TestsExecuted <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> Deployed <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> Verified <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">override</span> <span style="color:#57c7ff;font-weight:bold">string</span> ToString<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#82cc6a">$&#34;{nameof(ConfigurationValidated)}={ConfigurationValidated}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;{nameof(ArtifactsBuilt)}={ArtifactsBuilt}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;{nameof(TestsExecuted)}={TestsExecuted}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;{nameof(Deployed)}={Deployed}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;{nameof(Verified)}={Verified}&#34;</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
   <button
     class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
@@ -568,7 +585,7 @@ Both follow the same core idea—constructing a complex object step by step—bu
 </div>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 
-<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">IDeploymentPipelineBuilder</span>
+<div class="filename not-prose" dir="auto">IDeploymentPipelineBuilder.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">IDeploymentPipelineBuilder</span>
 </span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> ValidateConfiguration<span style="color:#56b6c2">();</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> BuildArtifacts<span style="color:#56b6c2">();</span>
@@ -646,7 +663,22 @@ Both follow the same core idea—constructing a complex object step by step—bu
 </div>
 <div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 
-<div class="filename not-prose" dir="auto">SocialMediaPostsServiceTests.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentDirector</span><span style="color:#56b6c2">(</span>IDeploymentPipelineBuilder builder<span style="color:#56b6c2">)</span>
+<div class="filename not-prose" dir="auto">IDeploymentDirector.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">IDeploymentDirector</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    DeploymentPipeline ConstructFullPipeline<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">DeploymentDirector.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DeploymentDirector</span><span style="color:#56b6c2">(</span>IDeploymentPipelineBuilder builder<span style="color:#56b6c2">)</span> <span style="color:#56b6c2">:</span> IDeploymentDirector
 </span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> DeploymentPipeline ConstructFullPipeline<span style="color:#56b6c2">()</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
@@ -667,8 +699,169 @@ Both follow the same core idea—constructing a complex object step by step—bu
   </button>
 </div>
 </div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">Program.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> Microsoft.Extensions.DependencyInjection<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> NonFluentBuilder<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> services <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> ServiceCollection<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>services<span style="color:#56b6c2">.</span>AddScoped<span style="color:#56b6c2">&lt;</span>IDeploymentPipelineBuilder<span style="color:#56b6c2">,</span> ProductionDeploymentBuilder<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>services<span style="color:#56b6c2">.</span>AddScoped<span style="color:#56b6c2">&lt;</span>IDeploymentDirector<span style="color:#56b6c2">,</span> DeploymentDirector<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var serviceProvider <span style="color:#56b6c2">=</span> services<span style="color:#56b6c2">.</span>BuildServiceProvider<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var scope <span style="color:#56b6c2">=</span> serviceProvider<span style="color:#56b6c2">.</span>CreateScope<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> director <span style="color:#56b6c2">=</span> scope<span style="color:#56b6c2">.</span>ServiceProvider<span style="color:#56b6c2">.</span>GetRequiredService<span style="color:#56b6c2">&lt;</span>IDeploymentDirector<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> pipeline <span style="color:#56b6c2">=</span> director<span style="color:#56b6c2">.</span>ConstructFullPipeline<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Console<span style="color:#56b6c2">.</span>WriteLine<span style="color:#56b6c2">(</span>pipeline<span style="color:#56b6c2">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
 <h3>Implementation (Example 2)<span class="hx-absolute -hx-mt-20" id="implementation-example-2"></span>
     <a href="#implementation-example-2" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluent2.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload"></iframe>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">DatabaseConfiguration.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DatabaseConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#bc74c4">    [Required(ErrorMessage = &#34;Host is required.&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">string?</span> Host <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#bc74c4">
+</span></span></span><span style="display:flex;"><span><span style="color:#bc74c4">    [Range(1, 65535, ErrorMessage = &#34;Port must be between 1 and 65535.&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">int</span> Port <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#bc74c4">
+</span></span></span><span style="display:flex;"><span><span style="color:#bc74c4">    [Required(ErrorMessage = &#34;Database name is required.&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">string?</span> Database <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> UseSsl <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#bc74c4">
+</span></span></span><span style="display:flex;"><span><span style="color:#bc74c4">    [Range(0, int.MaxValue, ErrorMessage = &#34;Timeout cannot be negative.&#34;)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">int</span> TimeoutSeconds <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">override</span> <span style="color:#57c7ff;font-weight:bold">string</span> ToString<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#82cc6a">$&#34;{nameof(Host)}={(Host ?? &#34;</span><span style="color:#cf5967;background-color:#43454f">null</span><span style="color:#82cc6a">&#34;)}, &#34;</span> <span style="color:#56b6c2">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#82cc6a">$&#34;{nameof(Port)}={Port}, &#34;</span> <span style="color:#56b6c2">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#82cc6a">$&#34;{nameof(Database)}={(Database ?? &#34;</span><span style="color:#cf5967;background-color:#43454f">null</span><span style="color:#82cc6a">&#34;)}, &#34;</span> <span style="color:#56b6c2">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#82cc6a">$&#34;{nameof(UseSsl)}={UseSsl}, &#34;</span> <span style="color:#56b6c2">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#82cc6a">$&#34;{nameof(TimeoutSeconds)}={TimeoutSeconds}&#34;</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">IDatabaseConfigurationBuilder.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">IDatabaseConfigurationBuilder</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> SetHost<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> host<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> SetPort<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> port<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> SetDatabase<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> database<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> EnableSsl<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">bool</span> enabled<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">void</span> SetTimeout<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> seconds<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    DatabaseConfiguration Build<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">DatabaseConfigurationBuilder.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">DatabaseConfigurationBuilder</span> <span style="color:#56b6c2">:</span> IDatabaseConfigurationBuilder
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">private</span> <span style="color:#7fbaf5">readonly</span> DatabaseConfiguration _configuration <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span><span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> SetHost<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> host<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _configuration<span style="color:#56b6c2">.</span>Host <span style="color:#56b6c2">=</span> host<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> SetPort<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> port<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _configuration<span style="color:#56b6c2">.</span>Port <span style="color:#56b6c2">=</span> port<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> SetDatabase<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> database<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _configuration<span style="color:#56b6c2">.</span>Database <span style="color:#56b6c2">=</span> database<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> EnableSsl<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">bool</span> enabled<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _configuration<span style="color:#56b6c2">.</span>UseSsl <span style="color:#56b6c2">=</span> enabled<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">void</span> SetTimeout<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> seconds<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _configuration<span style="color:#56b6c2">.</span>TimeoutSeconds <span style="color:#56b6c2">=</span> seconds<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> DatabaseConfiguration Build<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff;font-weight:bold">var</span> context <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> ValidationContext<span style="color:#56b6c2">(</span>_configuration<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff;font-weight:bold">var</span> results <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> List<span style="color:#56b6c2">&lt;</span>ValidationResult<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">if</span> <span style="color:#56b6c2">(</span>Validator<span style="color:#56b6c2">.</span>TryValidateObject<span style="color:#56b6c2">(</span>_configuration<span style="color:#56b6c2">,</span> context<span style="color:#56b6c2">,</span> results<span style="color:#56b6c2">,</span> validateAllProperties<span style="color:#56b6c2">:</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#7fbaf5">return</span> _configuration<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff;font-weight:bold">var</span> messages <span style="color:#56b6c2">=</span> results<span style="color:#56b6c2">.</span>Select<span style="color:#56b6c2">(</span>r <span style="color:#56b6c2">=&gt;</span> r<span style="color:#56b6c2">.</span>ErrorMessage<span style="color:#56b6c2">).</span>Where<span style="color:#56b6c2">(</span>m <span style="color:#56b6c2">=&gt;</span> m <span style="color:#56b6c2">!=</span> <span style="color:#cf5967;background-color:#43454f">null</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">throw</span> <span style="color:#7fbaf5">new</span> InvalidOperationException<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span><span style="color:#56b6c2">.</span>Join<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34; &#34;</span><span style="color:#56b6c2">,</span> messages<span style="color:#56b6c2">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">Program.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> Microsoft.Extensions.DependencyInjection<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> NonFluentBuilder2<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> services <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> ServiceCollection<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>services<span style="color:#56b6c2">.</span>AddScoped<span style="color:#56b6c2">&lt;</span>IDatabaseConfigurationBuilder<span style="color:#56b6c2">,</span> DatabaseConfigurationBuilder<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var serviceProvider <span style="color:#56b6c2">=</span> services<span style="color:#56b6c2">.</span>BuildServiceProvider<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var scope <span style="color:#56b6c2">=</span> serviceProvider<span style="color:#56b6c2">.</span>CreateScope<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> builder <span style="color:#56b6c2">=</span> scope<span style="color:#56b6c2">.</span>ServiceProvider<span style="color:#56b6c2">.</span>GetRequiredService<span style="color:#56b6c2">&lt;</span>IDatabaseConfigurationBuilder<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>SetHost<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;db.myCompany.com&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>SetPort<span style="color:#56b6c2">(</span><span style="color:#56b6c2">5432</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>SetDatabase<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Orders&#34;</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>EnableSsl<span style="color:#56b6c2">(</span><span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>builder<span style="color:#56b6c2">.</span>SetTimeout<span style="color:#56b6c2">(</span><span style="color:#56b6c2">30</span><span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> databaseConfiguration <span style="color:#56b6c2">=</span> builder<span style="color:#56b6c2">.</span>Build<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>Console<span style="color:#56b6c2">.</span>WriteLine<span style="color:#56b6c2">(</span>databaseConfiguration<span style="color:#56b6c2">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
 <h2>Fluent Builder (Modern Variation)<span class="hx-absolute -hx-mt-20" id="fluent-builder-modern-variation"></span>
     <a href="#fluent-builder-modern-variation" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The fluent builder is a modern variation that improves readability by returning the builder instance (this) from each method. This allows multiple build steps to be chained together in a single expression.</p>
 <h3>Characteristics<span class="hx-absolute -hx-mt-20" id="characteristics-1"></span>
@@ -703,6 +896,185 @@ Both follow the same core idea—constructing a complex object step by step—bu
 </ul>
 <h3>Implementation<span class="hx-absolute -hx-mt-20" id="implementation"></span>
     <a href="#implementation" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=FluentBuilder.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload"></iframe>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">Car.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">Car</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">string?</span> Brand <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">string?</span> Model <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">string?</span> Transmission <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> HasSunroof <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> HasNavigation <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">bool</span> HasParkingSensors <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#57c7ff;font-weight:bold">int</span> NumberOfDoors <span style="color:#56b6c2">{</span> <span style="color:#7fbaf5">get</span><span style="color:#56b6c2">;</span> <span style="color:#7fbaf5">set</span><span style="color:#56b6c2">;</span> <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">override</span> <span style="color:#57c7ff;font-weight:bold">string</span> ToString<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#82cc6a">$&#34;{Brand} {Model}, {Transmission}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;Doors: {NumberOfDoors}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;Sunroof: {HasSunroof}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;Navigation: {HasNavigation}, &#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#56b6c2">+</span> <span style="color:#82cc6a">$&#34;Parking Sensors: {HasParkingSensors}&#34;</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">ICarBuilder.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">interface</span> <span style="color:#ecbe7b">ICarBuilder</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder SetBrand<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> brand<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder SetModel<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> model<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder SetTransmission<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> transmission<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder AddSunroof<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder AddNavigation<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder AddParkingSensors<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>    ICarBuilder SetNumberOfDoors<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> doors<span style="color:#56b6c2">);</span>
+</span></span><span style="display:flex;"><span>    Car Build<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">CarBuilder.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">public</span> <span style="color:#7fbaf5">class</span> <span style="color:#ecbe7b">CarBuilder</span> <span style="color:#56b6c2">:</span> ICarBuilder
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">private</span> Car _car <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span><span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder SetBrand<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> brand<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>Brand <span style="color:#56b6c2">=</span> brand<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder SetModel<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> model<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>Model <span style="color:#56b6c2">=</span> model<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder SetTransmission<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">string</span> transmission<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>Transmission <span style="color:#56b6c2">=</span> transmission<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder AddSunroof<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>HasSunroof <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder AddNavigation<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>HasNavigation <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder AddParkingSensors<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>HasParkingSensors <span style="color:#56b6c2">=</span> <span style="color:#cf5967;background-color:#43454f">true</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> ICarBuilder SetNumberOfDoors<span style="color:#56b6c2">(</span><span style="color:#57c7ff;font-weight:bold">int</span> doors<span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        _car<span style="color:#56b6c2">.</span>NumberOfDoors <span style="color:#56b6c2">=</span> doors<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> <span style="color:#7fbaf5">this</span><span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#7fbaf5">public</span> Car Build<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57c7ff;font-weight:bold">var</span> built <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> Car
+</span></span><span style="display:flex;"><span>        <span style="color:#56b6c2">{</span>
+</span></span><span style="display:flex;"><span>            Brand <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>Brand<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            Model <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>Model<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            Transmission <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>Transmission<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            HasSunroof <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>HasSunroof<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            HasNavigation <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>HasNavigation<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            HasParkingSensors <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>HasParkingSensors<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>            NumberOfDoors <span style="color:#56b6c2">=</span> _car<span style="color:#56b6c2">.</span>NumberOfDoors<span style="color:#56b6c2">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#56b6c2">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3e4460">// reset builder for next car</span>
+</span></span><span style="display:flex;"><span>        _car <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> Car<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#7fbaf5">return</span> built<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#56b6c2">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+
+<div class="filename not-prose" dir="auto">Program.cs</div><div><div class="highlight"><pre tabindex="0" style="color:#c9c9c9;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> FluentBuilder<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> Microsoft.Extensions.DependencyInjection<span style="color:#56b6c2">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> services <span style="color:#56b6c2">=</span> <span style="color:#7fbaf5">new</span> ServiceCollection<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>services<span style="color:#56b6c2">.</span>AddScoped<span style="color:#56b6c2">&lt;</span>ICarBuilder<span style="color:#56b6c2">,</span> CarBuilder<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var serviceProvider <span style="color:#56b6c2">=</span> services<span style="color:#56b6c2">.</span>BuildServiceProvider<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#7fbaf5">using</span> var scope <span style="color:#56b6c2">=</span> serviceProvider<span style="color:#56b6c2">.</span>CreateScope<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> carBuilder <span style="color:#56b6c2">=</span> scope<span style="color:#56b6c2">.</span>ServiceProvider<span style="color:#56b6c2">.</span>GetRequiredService<span style="color:#56b6c2">&lt;</span>ICarBuilder<span style="color:#56b6c2">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57c7ff;font-weight:bold">var</span> car <span style="color:#56b6c2">=</span> carBuilder
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>SetBrand<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;BMW&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>SetModel<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;X5&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>SetTransmission<span style="color:#56b6c2">(</span><span style="color:#82cc6a">&#34;Automatic&#34;</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>SetNumberOfDoors<span style="color:#56b6c2">(</span><span style="color:#56b6c2">4</span><span style="color:#56b6c2">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>AddSunroof<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>AddNavigation<span style="color:#56b6c2">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#56b6c2">.</span>Build<span style="color:#56b6c2">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Console<span style="color:#56b6c2">.</span>WriteLine<span style="color:#56b6c2">(</span>car<span style="color:#56b6c2">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+  <button
+    class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4"></div>
+    <div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4"></div>
+  </button>
+</div>
+</div>
+<p>You can find the codes in the following GitHub repository.</p>
+<h4>See On Github Repository<span class="hx-absolute -hx-mt-20" id="see-on-github-repository"></span>
+    <a href="#see-on-github-repository" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose" style="--hextra-cards-grid-cols: 1;">
+<a
+  class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="https://github.com/vicky-sh/BuilderPattern.git"
+    target="_blank" rel="noreferrer"><span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50"><svg fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+Builder Pattern</span></a>
+</div>
+
+<h4>Open in an Online Code Editor<span class="hx-absolute -hx-mt-20" id="open-in-an-online-code-editor"></span>
+    <a href="#open-in-an-online-code-editor" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-cards hx-mt-4 hx-gap-4 hx-grid not-prose" style="--hextra-cards-grid-cols: 1;">
+<a
+  class="hextra-card hx-group hx-flex hx-flex-col hx-justify-start hx-overflow-hidden hx-rounded-lg hx-border hx-border-gray-200 hx-text-current hx-no-underline dark:hx-shadow-none hover:hx-shadow-gray-100 dark:hover:hx-shadow-none hx-shadow-gray-100 active:hx-shadow-sm active:hx-shadow-gray-200 hx-transition-all hx-duration-200 hover:hx-border-gray-300 hx-bg-transparent hx-shadow-sm dark:hx-border-neutral-800 hover:hx-bg-slate-50 hover:hx-shadow-md dark:hover:hx-border-neutral-700 dark:hover:hx-bg-neutral-900"href="https://github.dev/vicky-sh/BuilderPattern"
+    target="_blank" rel="noreferrer"><span class="hextra-card-icon hx-flex hx-font-semibold hx-items-start hx-gap-2 hx-p-4 hx-text-gray-700 hover:hx-text-gray-900 dark:hx-text-neutral-200 dark:hover:hx-text-neutral-50"><svg fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+Builder Pattern</span></a>
+</div>
+
 
         </div>
         <div class="hx-mt-16"></div>

@@ -97,7 +97,7 @@ Here, each method modifies the internal state of the builder. Once all steps are
 
 <iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluentBuilder1.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1xMhmGLegMb5frQgfU3sgDuHU2B-xvKY5%26export%3Ddownload"></iframe>
 
-```csharp {filename="SocialMediaPostsServiceTests.cs"}
+```csharp {filename="DeploymentPipeline.cs"}
 public class DeploymentPipeline
 {
     public bool ConfigurationValidated { get; set; }
@@ -105,10 +105,19 @@ public class DeploymentPipeline
     public bool TestsExecuted { get; set; }
     public bool Deployed { get; set; }
     public bool Verified { get; set; }
+
+    public override string ToString()
+    {
+        return $"{nameof(ConfigurationValidated)}={ConfigurationValidated}, "
+            + $"{nameof(ArtifactsBuilt)}={ArtifactsBuilt}, "
+            + $"{nameof(TestsExecuted)}={TestsExecuted}, "
+            + $"{nameof(Deployed)}={Deployed}, "
+            + $"{nameof(Verified)}={Verified}";
+    }
 }
 ```
 
-```csharp {filename="SocialMediaPostsServiceTests.cs"}
+```csharp {filename="IDeploymentPipelineBuilder.cs"}
 public interface IDeploymentPipelineBuilder
 {
     void ValidateConfiguration();
@@ -170,8 +179,16 @@ public class ProductionDeploymentBuilder : IDeploymentPipelineBuilder
 }
 ```
 
-```csharp {filename="SocialMediaPostsServiceTests.cs"}
-public class DeploymentDirector(IDeploymentPipelineBuilder builder)
+```csharp {filename="IDeploymentDirector.cs"}
+public interface IDeploymentDirector
+{
+    DeploymentPipeline ConstructFullPipeline();
+}
+
+```
+
+```csharp {filename="DeploymentDirector.cs"}
+public class DeploymentDirector(IDeploymentPipelineBuilder builder) : IDeploymentDirector
 {
     public DeploymentPipeline ConstructFullPipeline()
     {
@@ -185,9 +202,133 @@ public class DeploymentDirector(IDeploymentPipelineBuilder builder)
 }
 ```
 
+```csharp {filename="Program.cs"}
+using Microsoft.Extensions.DependencyInjection;
+using NonFluentBuilder;
+
+var services = new ServiceCollection();
+services.AddScoped<IDeploymentPipelineBuilder, ProductionDeploymentBuilder>();
+services.AddScoped<IDeploymentDirector, DeploymentDirector>();
+
+using var serviceProvider = services.BuildServiceProvider();
+using var scope = serviceProvider.CreateScope();
+var director = scope.ServiceProvider.GetRequiredService<IDeploymentDirector>();
+var pipeline = director.ConstructFullPipeline();
+
+Console.WriteLine(pipeline);
+```
+
 ### Implementation (Example 2)
 
 <iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=NonFluent2.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1vTKQui3lM33jkzVi791a1Rro_uM_ZVh7%26export%3Ddownload"></iframe>
+
+```csharp {filename="DatabaseConfiguration.cs"}
+public class DatabaseConfiguration
+{
+    [Required(ErrorMessage = "Host is required.")]
+    public string? Host { get; set; }
+
+    [Range(1, 65535, ErrorMessage = "Port must be between 1 and 65535.")]
+    public int Port { get; set; }
+
+    [Required(ErrorMessage = "Database name is required.")]
+    public string? Database { get; set; }
+
+    public bool UseSsl { get; set; }
+
+    [Range(0, int.MaxValue, ErrorMessage = "Timeout cannot be negative.")]
+    public int TimeoutSeconds { get; set; }
+    public override string ToString()
+    {
+        return $"{nameof(Host)}={(Host ?? "null")}, " +
+               $"{nameof(Port)}={Port}, " +
+               $"{nameof(Database)}={(Database ?? "null")}, " +
+               $"{nameof(UseSsl)}={UseSsl}, " +
+               $"{nameof(TimeoutSeconds)}={TimeoutSeconds}";
+    }
+}
+```
+
+```csharp {filename="IDatabaseConfigurationBuilder.cs"}
+public interface IDatabaseConfigurationBuilder
+{
+    void SetHost(string host);
+    void SetPort(int port);
+    void SetDatabase(string database);
+    void EnableSsl(bool enabled);
+    void SetTimeout(int seconds);
+    DatabaseConfiguration Build();
+}
+
+```
+
+```csharp {filename="DatabaseConfigurationBuilder.cs"}
+public class DatabaseConfigurationBuilder : IDatabaseConfigurationBuilder
+{
+    private readonly DatabaseConfiguration _configuration = new();
+
+    public void SetHost(string host)
+    {
+        _configuration.Host = host;
+    }
+
+    public void SetPort(int port)
+    {
+        _configuration.Port = port;
+    }
+
+    public void SetDatabase(string database)
+    {
+        _configuration.Database = database;
+    }
+
+    public void EnableSsl(bool enabled)
+    {
+        _configuration.UseSsl = enabled;
+    }
+
+    public void SetTimeout(int seconds)
+    {
+        _configuration.TimeoutSeconds = seconds;
+    }
+
+    public DatabaseConfiguration Build()
+    {
+        var context = new ValidationContext(_configuration);
+        var results = new List<ValidationResult>();
+
+        if (Validator.TryValidateObject(_configuration, context, results, validateAllProperties: true))
+            return _configuration;
+
+        var messages = results.Select(r => r.ErrorMessage).Where(m => m != null);
+        throw new InvalidOperationException(string.Join(" ", messages));
+    }
+}
+
+```
+
+```csharp {filename="Program.cs"}
+using Microsoft.Extensions.DependencyInjection;
+using NonFluentBuilder2;
+
+var services = new ServiceCollection();
+services.AddScoped<IDatabaseConfigurationBuilder, DatabaseConfigurationBuilder>();
+
+using var serviceProvider = services.BuildServiceProvider();
+using var scope = serviceProvider.CreateScope();
+
+var builder = scope.ServiceProvider.GetRequiredService<IDatabaseConfigurationBuilder>();
+
+builder.SetHost("db.myCompany.com");
+builder.SetPort(5432);
+builder.SetDatabase("Orders");
+builder.EnableSsl(true);
+builder.SetTimeout(30);
+
+var databaseConfiguration = builder.Build();
+Console.WriteLine(databaseConfiguration);
+
+```
 
 ## Fluent Builder (Modern Variation)
 
@@ -220,3 +361,146 @@ This style is especially popular in public APIs, SDKs, and configuration-heavy c
 ### Implementation
 
 <iframe frameborder="0" style="width:100%;height:430px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=000000&edit=_blank&layers=1&nav=1&title=FluentBuilder.drawio&dark=1#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Cat3NVqnQPNTrq2RyBy7VCNMZGwdHhtR%26export%3Ddownload"></iframe>
+
+```csharp {filename="Car.cs"}
+public class Car
+{
+    public string? Brand { get; set; }
+    public string? Model { get; set; }
+    public string? Transmission { get; set; }
+    public bool HasSunroof { get; set; }
+    public bool HasNavigation { get; set; }
+    public bool HasParkingSensors { get; set; }
+    public int NumberOfDoors { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Brand} {Model}, {Transmission}, "
+            + $"Doors: {NumberOfDoors}, "
+            + $"Sunroof: {HasSunroof}, "
+            + $"Navigation: {HasNavigation}, "
+            + $"Parking Sensors: {HasParkingSensors}";
+    }
+}
+
+```
+
+```csharp {filename="ICarBuilder.cs"}
+public interface ICarBuilder
+{
+    ICarBuilder SetBrand(string brand);
+    ICarBuilder SetModel(string model);
+    ICarBuilder SetTransmission(string transmission);
+    ICarBuilder AddSunroof();
+    ICarBuilder AddNavigation();
+    ICarBuilder AddParkingSensors();
+    ICarBuilder SetNumberOfDoors(int doors);
+    Car Build();
+}
+```
+
+```csharp {filename="CarBuilder.cs"}
+public class CarBuilder : ICarBuilder
+{
+    private Car _car = new();
+
+    public ICarBuilder SetBrand(string brand)
+    {
+        _car.Brand = brand;
+        return this;
+    }
+
+    public ICarBuilder SetModel(string model)
+    {
+        _car.Model = model;
+        return this;
+    }
+
+    public ICarBuilder SetTransmission(string transmission)
+    {
+        _car.Transmission = transmission;
+        return this;
+    }
+
+    public ICarBuilder AddSunroof()
+    {
+        _car.HasSunroof = true;
+        return this;
+    }
+
+    public ICarBuilder AddNavigation()
+    {
+        _car.HasNavigation = true;
+        return this;
+    }
+
+    public ICarBuilder AddParkingSensors()
+    {
+        _car.HasParkingSensors = true;
+        return this;
+    }
+
+    public ICarBuilder SetNumberOfDoors(int doors)
+    {
+        _car.NumberOfDoors = doors;
+        return this;
+    }
+
+    public Car Build()
+    {
+        var built = new Car
+        {
+            Brand = _car.Brand,
+            Model = _car.Model,
+            Transmission = _car.Transmission,
+            HasSunroof = _car.HasSunroof,
+            HasNavigation = _car.HasNavigation,
+            HasParkingSensors = _car.HasParkingSensors,
+            NumberOfDoors = _car.NumberOfDoors,
+        };
+
+        // reset builder for next car
+        _car = new Car();
+        return built;
+    }
+}
+
+```
+
+```csharp {filename="Program.cs"}
+using FluentBuilder;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+services.AddScoped<ICarBuilder, CarBuilder>();
+
+using var serviceProvider = services.BuildServiceProvider();
+using var scope = serviceProvider.CreateScope();
+var carBuilder = scope.ServiceProvider.GetRequiredService<ICarBuilder>();
+
+var car = carBuilder
+    .SetBrand("BMW")
+    .SetModel("X5")
+    .SetTransmission("Automatic")
+    .SetNumberOfDoors(4)
+    .AddSunroof()
+    .AddNavigation()
+    .Build();
+
+Console.WriteLine(car);
+
+```
+
+You can find the codes in the following GitHub repository.
+
+#### See On Github Repository
+
+{{< cards cols="1" >}}
+{{< card link="https://github.com/vicky-sh/BuilderPattern.git" title="Builder Pattern" icon="github" >}}
+{{< /cards >}}
+
+#### Open in an Online Code Editor
+
+{{< cards cols="1" >}}
+{{< card link="https://github.dev/vicky-sh/BuilderPattern" title="Builder Pattern" icon="github" >}}
+{{< /cards >}}
