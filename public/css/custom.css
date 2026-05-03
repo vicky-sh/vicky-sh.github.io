@@ -1,3 +1,7 @@
 .layout-hextra-home .hx-items-start {
     align-items: center;
   }
+
+:root {
+  --hextra-max-page-width: 85rem;
+}

@@ -43,6 +43,8 @@ params:
   theme:
     default: dark
     displayToggle: false
+  css:
+    - css/custom.css
   navbar:
     displayTitle: true
     displayLogo: true

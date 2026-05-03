@@ -23,7 +23,7 @@ sidebar:
 {{< hextra/feature-grid >}}
 {{< hextra/feature-card link="design-patterns/builder/" title="Builder Pattern" subtitle="Pattern that constructs complex objects step by step while keeping creation logic separate and readable." >}}
 
-{{< hextra/feature-card title="Post Coming Soon" subtitle="Something new will come soon." >}}
+{{< hextra/feature-card link="design-patterns/factory/" title="Factory" subtitle="Pattern that delegates object creation to specialized classes, keeping code flexible and decoupled." >}}
 
 {{< hextra/feature-card title="Post Coming Soon" subtitle="Something new will come soon." >}}
 {{< /hextra/feature-grid >}}
