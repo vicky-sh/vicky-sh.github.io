@@ -1,6 +1,6 @@
 ---
 date: "2025-12-24T23:19:09+05:30"
-draft: true
+draft: false
 title: "Factory"
 cascade:
   type: docs
