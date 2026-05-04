@@ -416,13 +416,13 @@ All providers are registered, and the container automatically injects them as `I
 
 You can find the codes in the following GitHub repository.
 
-### See On Github Repository
+## See On Github Repository
 
 {{< cards cols="1" >}}
 {{< card link="https://github.com/vicky-sh/FactoryPattern" title="Factory Pattern" icon="github" >}}
 {{< /cards >}}
 
-### Open in an Online Code Editor
+## Open in an Online Code Editor
 
 {{< cards cols="1" >}}
 {{< card link="https://github.dev/vicky-sh/FactoryPattern" title="Factory Pattern" icon="github" >}}
